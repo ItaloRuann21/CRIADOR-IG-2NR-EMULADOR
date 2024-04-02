@@ -1,0 +1,264 @@
+from random import randint
+from time import sleep
+
+from termcolor import colored
+
+from _2nr.pegar_codigo import pegar_codigo
+from contas import contas_criadas, nao_criou
+from Images.ManipularImagens import Imagem
+from mensagens.mensagens import (mensagem_atencao, mensagem_erro,
+                                 mensagem_normal, mensagem_sucesso)
+
+# Iniciando contador
+contador_contas = 0
+
+def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
+    try:
+        
+        global contador_contas
+        
+        # # Limpar memoria ram
+        # device.press('control + shift + t')
+        
+        # Instancia de Imagem para manipular
+        imagem = Imagem(device)
+        
+        # Clicar em Adicionar numero 2nr
+        try:
+            mensagem_normal('> Adicionando número 2nr')
+            device(className='android.widget.EditText')[0].wait(30)
+            device(className='android.widget.EditText')[0].click()
+        except:
+            mensagem_erro('> Não foi possível clicar no campo do input e adicionar o número')
+            return False
+        
+        # Preecnher numero
+        if device(focused=True).exists:
+            device(focused=True).set_text(numero)
+            mensagem_normal('< Número preenchido.')
+        
+        sleep(2)
+            
+        
+        # Clicar em Avançar
+        device(text='Avançar').wait(30)
+        device(text='Avançar').click()
+        
+        sleep(2)
+        
+        # Clicar em Criar nova conta
+        try:
+            device(text='Criar nova conta').wait(15)
+            device(text='Criar nova conta').click()
+            
+        except:
+            pass
+        
+        sleep(2)
+        
+        # Verificando se existe algum dos erros apos adicionar numero
+        for x in range(10):
+            sleep(1)
+            # Se aparecer Ocorreu um erro. Tente novamente mais tarde.
+            if device(text='Ocorreu um erro. Tente novamente mais tarde.').exists:
+                mensagem_atencao('> Esse número já recebeu muitos SMS.')
+                return False
+            
+            # elif device(text='A Página não está disponível no momento').wait():
+            #     mensagem_atencao('> Página indisponível, trocando VPN.')
+            #     return False
+        
+        sleep(2)
+    
+
+        mensagem_normal('> Código enviado, esperando.')
+        # Instanciando função para pegar codigo
+        codigo = False
+        codigo = pegar_codigo(device)
+        mensagem_normal('> Código chegou: ' + str(codigo))
+
+        if not codigo:
+            return False
+        
+        sleep(2)
+   
+        # Caso apareça o codigo de confirmação, digita o codigo
+        device(text='Código de confirmação').wait(30)
+        if device(focused=True).exists:
+            device(focused=True).set_text(codigo)
+            mensagem_normal('> Código adicionado no input')
+            
+        sleep(2)
+ 
+        # Clicar em avançar
+        try:
+            device(text='Avançar').wait(30)
+            device(text='Avançar').click()
+        except:
+            pass
+        
+        sleep(2)
+        
+        # Colocando a senha
+        try:
+            if imagem.esperar_imagem('./Images/senha_visivel.png'):
+                imagem.clicar_na_imagem('./Images/senha_visivel.png')
+                device(focused=True).set_text(senha)
+                mensagem_normal('> Senha adicionada no campo do input.')
+        except:
+            mensagem_erro('> Não foi possível adicionar senha')
+            return False
+                
+        sleep(2)
+
+        # Clicar em avançar
+        device(text='Avançar').wait(30)
+        device(text='Avançar').click()
+        
+        sleep(2)
+
+        # Clicar em Agora não
+        try:
+            device(text='Agora não').wait(30)
+            device(text='Agora não').click()
+        except:
+            pass
+            
+        sleep(2)
+        
+        # Clicar em DEFINIR
+        if device(text='DEFINIR').wait(30):
+            device(text='DEFINIR').click()
+        else:
+            imagem.clicar_na_imagem('./Images/definir.png')
+        
+        sleep(2)
+ 
+        # Clicar em avançar
+        try:
+            device(text='Avançar').wait(30)
+            device(text='Avançar').click()
+        except:
+            pass
+        
+        sleep(2)
+        
+        # Se aparecer o erro
+        if device(text='Parece que você inseriu informações incorretas. Use sua data de nascimento verdadeira.').wait(30):
+            device(text='Avançar').wait(30)
+            device(text='Avançar').click()
+            
+        sleep(2)
+   
+        # Definindo o ano
+        mensagem_normal('> Definindo idade')
+        ano = randint(18, 60)
+        device(className='android.widget.EditText').wait(30)
+        device(className='android.widget.EditText').set_text(str(ano))
+        
+        sleep(2)
+        
+        # Clicando em avançar
+        device(text='Avançar').wait(30)
+        device(text='Avançar').click()
+        
+        sleep(2)
+        
+        # Se aparecer essa msg
+        device(text='OK').wait(30)
+        device(text='OK').click()
+        
+        sleep(2)
+        
+        # Definindo o nome completo
+        mensagem_normal('> Digitando o nome completo.')
+        if imagem.esperar_imagem('./Images/nome_completo.png'):
+            mensagem_normal('> Teste')
+            imagem.clicar_na_imagem('./Images/nome_completo.png')
+            mensagem_normal('> Teste2')
+            device(focused=True).set_text(nome)
+        
+        mensagem_normal('> Nome completo: ' + nome)
+        
+        
+        sleep(2)
+        
+        
+        # Clicar em avançar
+        device(text='Avançar').wait(30)
+        device(text='Avançar').click()
+        
+        sleep(2)
+        
+        
+        # Caso o usuário ja exista...
+        seletor = f'O nome de usuário {usuario} não está disponível.'
+        if device(text=seletor).wait(5):
+            device(className='android.view.ViewGroup')[0].click()
+            mensagem_atencao('> Número de usuário já existe! Tentando outro.')
+            
+        else:
+            # Escolher nome de usuario
+            device(className='android.widget.EditText').wait(10)
+            usuario = device(className='android.widget.EditText').get_text()
+            mensagem_normal('> Nome de usuário definido: ' + usuario)
+            
+        sleep(2)
+        
+        # Clicar em avançar
+        device(text='Avançar').wait(30)
+        device(text='Avançar').click()
+        
+        sleep(2)
+        
+        # Confirmar termos de uso
+        mensagem_normal('> Concordando com os termos de uso.')
+        
+        # Concordo
+        if imagem.esperar_imagem('./Images/concordo.png'):
+            imagem.clicar_na_imagem('./Images/concordo.png')
+            
+            
+        
+        sleep(2)
+        
+        # Se apareceu isso, a conta foi criada!
+        criou = False
+        for x in range(15):
+            sleep(1)
+            if device(text='Adicione uma foto do perfil').exists:
+                mensagem_sucesso('> CONTA CRIADA COM SUCESSO!')
+                contador_contas += 1
+                print(colored('Quantidade criadas: ', 'yellow') + colored(str(contador_contas), 'green'))
+                contas_criadas(usuario, senha)
+                device.app_clear('com.excelliance.multiaccounts')
+                criou = True
+                break
+            
+            if device(text='Adicionar foto').wait(10):
+                mensagem_sucesso('> CONTA CRIADA COM SUCESSO!')
+                contador_contas += 1
+                print(colored('Quantidade criadas: ', 'yellow') + colored(str(contador_contas), 'green'))
+                contas_criadas(usuario, senha)
+                device.app_clear('com.excelliance.multiaccounts')
+                criou = True
+                break
+            
+            if device(text='Pular').wait(10):
+                mensagem_sucesso('> CONTA CRIADA COM SUCESSO!')
+                contador_contas += 1
+                print(colored('Quantidade criadas: ', 'yellow') + colored(str(contador_contas), 'green'))
+                contas_criadas(usuario, senha)
+                device.app_clear('com.excelliance.multiaccounts')
+                criou = True
+                break
+        
+        if not criou:
+            mensagem_erro('> Conta não foi criada! Verifique manualmente depois.')
+            nao_criou(usuario, senha)
+            return False
+        
+        return True
+    except Exception as erro:
+        print(erro)
+        return False
