@@ -5,7 +5,7 @@
 ## Método:
 
 - Aplicativo 2NR
-- Aplicativo SurfShake VPN
+- Várias VPN mapeadas.
 - Aplicativo Varias Contas
 
 ## Como usar o repositório:
