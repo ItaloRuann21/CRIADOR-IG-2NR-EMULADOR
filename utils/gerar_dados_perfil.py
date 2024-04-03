@@ -18,5 +18,5 @@ def gerar_dados_perfil():
 
     nome = nome1 + ' ' + nome2 + ' ' + nome3
     usuario = nome1.lower() + nome2.lower() + str(num) + nome3.lower()
-
+    
     return nome, usuario
