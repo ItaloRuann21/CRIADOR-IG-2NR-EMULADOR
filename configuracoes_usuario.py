@@ -9,7 +9,7 @@ def configuracao():
     criacao = int(input('Criar quantas contas?\n> '))
     
     
-    definir_vpn = int(input('Escolha a vpn:\n1 - Surfshake\n2 - Fast Vpn Freedom\n3 - Vpn Unlimited\n> '))
+    definir_vpn = int(input('Escolha a vpn:\n1-Surfshake 2-Fast Vpn Freedom 3-Vpn Unlimited 4-Urban VPN\n> '))
     
     
     return criacao, definir_vpn, porta
