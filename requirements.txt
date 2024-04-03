@@ -2,4 +2,4 @@ uiautomator2
 setuptools
 opencv-python
 termcolor
-pyfiglet
+playwright
