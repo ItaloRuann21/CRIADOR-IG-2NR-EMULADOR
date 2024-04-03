@@ -14,6 +14,7 @@ from utils.gerar_senha_perfil import gerar_senha_perfil
 from utils.parando_aplicativos import forçar_parada
 from vpn.fast_vpn_freedom import fast_vpn_freedom
 from vpn.surfshake import conectar_surfshake
+from vpn.urban_vpn import urban_vpn
 from vpn.vpn_unlimited_proxy import vpn_unlimited_proxy
 
 
@@ -36,8 +37,6 @@ def main():
     # nome
     nome, usuario = gerar_dados_perfil()
     
-    
-    
     # Conectar na VPN
     def trocar_ip():
         if definir_vpn == 1:
@@ -52,6 +51,10 @@ def main():
             res = vpn_unlimited_proxy(device=device)
             if not res:
                 return vpn_unlimited_proxy(device=device)
+        elif definir_vpn == 4:
+            res = urban_vpn(device=device)
+            if not res:
+                return urban_vpn(device=device)
     trocar_ip()
 
     

@@ -9,6 +9,9 @@ def forçar_parada(device):
     
     # Fast Vpn Freedom
     device.app_stop('easyvpn.free.vpn.unblock.proxy')
+
+    # Urban VPN
+    device.app_stop('com.urbanvpn.android')
     
     # Vpn Unlimited Proxy
     device.app_stop('com.free.vpn.super.hotspot.open')
