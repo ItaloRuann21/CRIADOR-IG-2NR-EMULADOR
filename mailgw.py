@@ -1,13 +1,15 @@
 from time import sleep
+
 from playwright.sync_api import sync_playwright
 
 from funçoes_playwright.abrir_navegador import abrir_navegador
 
+
 def email_mailgw(pagina, email, senha):
     try:
         # mailgw
+        print('> Acessando o MailGW')
         pagina.goto('https://mail.gw/en/')
-        
 
         # Clicar no menu
         pagina.wait_for_selector('#accounts-menu')
@@ -36,27 +38,30 @@ def email_mailgw(pagina, email, senha):
 
         # Obtenha o valor do atributo 'value' do elemento usando evaluate
         valor_email = email_criado.evaluate('(element) => element.value')
-        
+
         return valor_email
 
     except Exception as erro:
         print(erro)
         return False
 
+
 def codigo_mailgw(pagina):
     try:
         # Esperar código chegar
-        pagina.wait_for_selector('[class="all-messages"]', timeout=60000)
-        
-        # Verificar se existe o nome na caixa de mensagem
-        seletor = pagina.query_selector('[class="all-messages"]').text_content()
-        
-        # Verificar se existe esse dominio do 2nr
-        if '<kontakt@2nr.pl>' in seletor:
-            # Clicar nas mensagens
-            pagina.click('[class="the-message-subject"]')
+        pagina.wait_for_selector(
+            '[class="flex items-center px-4 py-4 sm:px-6"]', timeout=60000)
 
-        
+        # Verificar se existe o nome na caixa de mensagem
+        seletor = pagina.query_selector(
+            '[class="flex items-center px-4 py-4 sm:px-6"]').text_content()
+
+        # Verificar se existe esse dominio do 2nr
+        if 'kontakt@2nr.pl' in seletor:
+            # Clicar nas mensagens
+            pagina.click('[class="flex items-center px-4 py-4 sm:px-6"]')
+
+        # Clicar no link
         for x in range(30):
             print('> Esperando chegar a mensagem para clicar no link')
             # Esperando 1 segundo
@@ -65,7 +70,7 @@ def codigo_mailgw(pagina):
             # Capturando o botão de substituir e-mail
             resultado = pagina.evaluate('''()=>{
                 var res = false
-                document.querySelectorAll('u').forEach((u)=>{
+                document.querySelectorAll('p').forEach((u)=>{
                     if(u.innerText == 'Kliknij aby aktywować konto'){
                         u.click()
                         res = true
@@ -78,20 +83,26 @@ def codigo_mailgw(pagina):
                 break
             else:
                 return False
-        
+
         # Aguardar a nova página ser aberta
         nova_pagina = pagina.wait_for_event('popup')
-        
+
         # Esperar o seletor chegar
         if nova_pagina.wait_for_selector('[class="hamburger-box"]'):
             print('> Conta 2NR Criada!')
-        
+
+        nova_pagina
+
         return True
 
     except Exception as erro:
         print(erro)
         return False
-    
+
+
 with sync_playwright() as playwright:
-            navegador, pagina = abrir_navegador(playwright)
-            email = email_mailgw(pagina, 'italoflamenddxssasaxsgjuisj344', 'senehdyed44')
+    navegador, pagina = abrir_navegador(playwright)
+    email = email_mailgw(
+        pagina, 'daasdeeaeeaae', 'senehdyed44')
+    codigo_mailgw(pagina)
+    sleep(30)
