@@ -17,6 +17,17 @@ def aceitando_permissoes_2nr(device):
         "android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS",  # Ignorar otimizações de bateria
         "android.permission.SYSTEM_ALERT_WINDOW",      # Sobrepor outros aplicativos
         "android.permission.RECORD_AUDIO",             # Gravar áudio (microfone)
+        "android.permission.ACCESS_FINE_LOCATION"      # Localização precisa
+        "android.permission.ACCESS_COARSE_LOCATION"    # Localização parcial
+        "android.permission.READ_CALENDAR"
+        "android.permission.WRITE_CALENDAR"
+        "android.permission.SEND_SMS"
+        "android.permission.RECEIVE_SMS"
+        "android.permission.CALL_PHONE"
+        "android.permission.READ_PHONE_STATE"
+        "android.permission.ACCESS_NOTIFICATION_POLICY"
+        "android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+        "android.permission.BIND_ACCESSIBILITY_SERVICE"        
     ]
 
     for permissao in permissoes:
