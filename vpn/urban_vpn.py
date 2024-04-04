@@ -13,7 +13,7 @@ def paises_urban():
 
 def urban_vpn(device):
     try:
-        
+
         # Limpar daods urban
         mensagem_normal('> Limpando dados da Urban VPN')
         device.app_clear('com.urbanvpn.android')
@@ -29,18 +29,18 @@ def urban_vpn(device):
         # ACCEPT
         if device(text='ACCEPT').exists(timeout=30):
             device(text='ACCEPT').click()
-        
+
         # Agree & Continue
         if device(text='Skip').exists(timeout=30):
             device(text='Skip').click()
-        
+
         # Pesquisar pais
         paises = paises_urban()
         mensagem_normal('> País escolhido da urban vpn: ' + paises)
         if device(resourceId='com.urbanvpn.android:id/searchView').exists(timeout=30):
             device(resourceId='com.urbanvpn.android:id/searchView').click()
             device(resourceId='com.urbanvpn.android:id/searchView').set_text(paises)
-        
+
         # Clicar no país
         if device(resourceId='com.urbanvpn.android:id/suggestion_name').exists(timeout=30):
             device(resourceId='com.urbanvpn.android:id/suggestion_name').click()
@@ -48,11 +48,11 @@ def urban_vpn(device):
             # Se aparecer a mensagem para confirmar vpn, clica em OK
             if device(text='Solicitação de conexão').exists():
                 device(text='OK').click()
-        
+
         # Se a vpnc chegar na contagem de 5 segundos, então conectou
         if device(text='00 : 00 : 05').exists(timeout=7):
             return 'VPN Conectada!'
-        
+
         return True
     except:
         mensagem_erro('> Não foi possível conectar na Urban VPN.')

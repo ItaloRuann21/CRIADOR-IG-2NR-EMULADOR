@@ -13,11 +13,11 @@ class Imagem:
         target_gray = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)
 
         # Realize a correspondência de modelo
-        result = cv2.matchTemplate(target_gray, template_gray, cv2.TM_CCOEFF_NORMED)
+        result = cv2.matchTemplate(
+            target_gray, template_gray, cv2.TM_CCOEFF_NORMED)
         _, _, _, max_loc = cv2.minMaxLoc(result)
 
         return result, max_loc
-    
 
     def clicar_na_imagem(self, caminho_imagem: str):
         imagem_salva = cv2.imread(caminho_imagem)
@@ -28,18 +28,19 @@ class Imagem:
                 captura_dispositivo = self.device.screenshot(format='opencv')
 
                 # Encontra a posição da imagem correspondente
-                result, match_position = self._procurar_posicao_imagem(imagem_salva, captura_dispositivo)
+                result, match_position = self._procurar_posicao_imagem(
+                    imagem_salva, captura_dispositivo)
 
                 # Se a confiança da correspondência for suficientemente alta
-                if result[match_position[1]][match_position[0]] > 0.7:
+                if result[match_position[1]][match_position[0]] > 0.6:
                     # Clique na posição encontrada
                     self.device.click(match_position[0], match_position[1])
                     break
             return True
         except:
             return False
-    
-    def esperar_imagem(self, caminho_imagem: str):
+
+    def double_click_imagem(self, caminho_imagem: str):
         imagem_salva = cv2.imread(caminho_imagem)
 
         try:
@@ -48,12 +49,14 @@ class Imagem:
                 captura_dispositivo = self.device.screenshot(format='opencv')
 
                 # Encontra a posição da imagem correspondente
-                result, match_position = self._procurar_posicao_imagem(imagem_salva, captura_dispositivo)
+                result, match_position = self._procurar_posicao_imagem(
+                    imagem_salva, captura_dispositivo)
 
                 # Se a confiança da correspondência for suficientemente alta
-                if result[match_position[1]][match_position[0]] > 0.7:
+                if result[match_position[1]][match_position[0]] > 0.6:
                     # Clique na posição encontrada
-                    print('Imagem existe!')
+                    self.device.double_click(
+                        match_position[0], match_position[1])
                     break
             return True
         except:

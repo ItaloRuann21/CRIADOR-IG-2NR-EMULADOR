@@ -1,3 +1,7 @@
+from random import choice
+from time import sleep
+
+from Images.ManipularImagens import Imagem
 from mensagens.mensagens import mensagem_normal
 from vpn.paises_fast_vpn_freedom import paises_fast_vpn
 
@@ -7,54 +11,41 @@ def vpn_unlimited_proxy(device):
         # Limpar dados
         mensagem_normal('> Limpando dados da VPN Unlimited Proxy')
         device.app_clear('com.free.vpn.super.hotspot.open')
-        
+
         # Abrir VPN
         device.app_start('com.free.vpn.super.hotspot.open', use_monkey=True)
-        
+
         # ACCEPT AND CONTINUE
-        try:
-            device(resourceId='com.free.vpn.super.hotspot.open:id/btnAgree').wait(30)
-            device(resourceId='com.free.vpn.super.hotspot.open:id/btnAgree').click()
-        except:
-            return False
-        
+        imagem = Imagem(device)
+        imagem.clicar_na_imagem(
+            './Images/super_vpn_unlimited/accept_and_continue.png')
+
         # Continuar com anúncios
-        try:
-            device(text='Continuar com anúncios').wait(30)
-            device(text='Continuar com anúncios').click()
-        except:
-            return False
-        
+        imagem.clicar_na_imagem(
+            './Images/super_vpn_unlimited/continuar_com_anuncio.png')
+
         # Localização mais rápida
-        try:
-            device(resourceId='com.free.vpn.super.hotspot.open:id/tv_fastest_server').wait(60)
-            device(resourceId='com.free.vpn.super.hotspot.open:id/tv_fastest_server').click()
-        except:
-            return False
-        
-        # Escolher pais aleatorio da america do norte ou sul
-        pais = paises_fast_vpn()
-        mensagem_normal('> País escolhido: ' + pais)
-        
-        while True:
-            '''Nesse While, o IF verifica se o pais existe, se existe, clica. ELSE > Rola até encontrar o pais certo'''
-            if device(text=pais).exists:
-                device(text=pais).click()
-                break
-            else:
-                device.swipe(0.501, 0.9, 0.485, 0.335)
-            
+        imagem.clicar_na_imagem(
+            './Images/super_vpn_unlimited/localizacao_mais_rapida.png')
+
+        # Recarregar duas vezes a lista de paises
+        imagem.clicar_na_imagem(
+            './Images/super_vpn_unlimited/recarregar.png')
+        imagem.clicar_na_imagem(
+            './Images/super_vpn_unlimited/recarregar.png')
+        sleep(2)
+        # Clicando em lugares aleatorios
+        device.click(0.058, 0.649)
+
         # Solicitando Conexão
         if device(resourceId='android:id/alertTitle').exists:
             device(text='OK').click()
-        
+
         # Verificar se conectou com sucesso
         if device(text='Conectado com sucesso').wait(30):
             device.press('home')
             return True
-        else:
-            return False
-        
+
     except Exception as erro:
         print(erro)
         return False
