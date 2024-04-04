@@ -1,3 +1,5 @@
+from time import sleep
+
 from mensagens.mensagens import mensagem_erro, mensagem_normal
 
 from .permissoes_2nr import aceitando_permissoes_2nr
@@ -26,6 +28,7 @@ def apagar_conta_2nr(device):
         mensagem_normal('> Fazendo login no 2nr')
         if device(text='LOGIN').exists(timeout=30):
             device(text='LOGIN').click()
+        sleep(1)
 
         # Clicar em Google
         if device(text='Google').exists(timeout=30):

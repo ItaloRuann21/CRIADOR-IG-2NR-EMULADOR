@@ -40,7 +40,7 @@ class Imagem:
         except:
             return False
 
-    def double_click_imagem(self, caminho_imagem: str):
+    def esperar_imagem(self, caminho_imagem: str):
         imagem_salva = cv2.imread(caminho_imagem)
 
         try:
@@ -55,8 +55,6 @@ class Imagem:
                 # Se a confiança da correspondência for suficientemente alta
                 if result[match_position[1]][match_position[0]] > 0.6:
                     # Clique na posição encontrada
-                    self.device.double_click(
-                        match_position[0], match_position[1])
                     break
             return True
         except:

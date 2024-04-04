@@ -1,3 +1,4 @@
+from random import choice
 from time import sleep
 
 import uiautomator2 as u2
@@ -12,15 +13,16 @@ from mensagens.mensagens import (mensagem_atencao, mensagem_carregamento,
 from utils.gerar_dados_perfil import gerar_dados_perfil
 from utils.gerar_senha_perfil import gerar_senha_perfil
 from utils.parando_aplicativos import forçar_parada
-from vpn.fast_vpn_freedom import fast_vpn_freedom
-from vpn.surfshake import conectar_surfshake
-from vpn.urban_vpn import urban_vpn
-from vpn.vpn_unlimited_proxy import vpn_unlimited_proxy
+from vpn.fast_vpn_freedom.fast_vpn_freedom import fast_vpn_freedom
+from vpn.super_vpn_unlimited_proxy.vpn_unlimited_proxy import \
+    vpn_unlimited_proxy
+from vpn.surfsharke.surfshake import conectar_surfshake
+from vpn.urban_vpn.urban_vpn import urban_vpn
 
 
 def main():
     # Configurações de usuário
-    criacao, definir_vpn, porta = configuracao()
+    criacao, porta = configuracao()
 
     device = u2.connect(f'127.0.0.1:{porta}')  # Conectar ao UiAutomator2
 
@@ -29,44 +31,33 @@ def main():
     mensagem_carregamento('Carregando...')
     print('')
 
-    # Forçando parada dos aplicativos
-    forçar_parada(device=device)
-
-    # Senha
-    senha = gerar_senha_perfil()
-
-    # nome
-    nome, usuario = gerar_dados_perfil()
-
     # Conectar na VPN
     def trocar_ip():
-        if definir_vpn == 1:
-            res = conectar_surfshake(device=device)
-            if not res:
-                return conectar_surfshake(device=device)
-        elif definir_vpn == 2:
-            res = fast_vpn_freedom(device=device)
-            if not res:
-                return fast_vpn_freedom(device=device)
-        elif definir_vpn == 3:
-            res = vpn_unlimited_proxy(device=device)
-            if not res:
-                return vpn_unlimited_proxy(device=device)
-        elif definir_vpn == 4:
-            res = urban_vpn(device=device)
-            if not res:
-                return urban_vpn(device=device)
+        # Forçando parada dos aplicativos
+        forçar_parada(device=device)
+        mensagem_normal('> Iniciando VPN aleatória.')
+        vpns = [conectar_surfshake, fast_vpn_freedom,
+                vpn_unlimited_proxy]
+        vpn_escolhida = choice(vpns)
+        res = vpn_escolhida(device=device)
+        if not res:
+            return vpn_escolhida(device=device)
     trocar_ip()
 
     for x in range(criacao):
+
+        # Senha
+        senha = gerar_senha_perfil()
+
+        # nome
+        nome, usuario = gerar_dados_perfil()
 
         # Apagando conta 2nr
         quantidade_tentativas = 0
         res = apagar_conta_2nr(device=device)
         if not res:
             while quantidade_tentativas < 4:
-                trocar_ip()
-                mensagem_normal('> Tentando novamente')
+                mensagem_normal('> Tentando apagar a conta do 2nr novamente.')
                 res = apagar_conta_2nr(device=device)
                 if res:
                     break

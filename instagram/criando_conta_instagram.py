@@ -47,6 +47,12 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
 
         sleep(2)
 
+        # se aparecer a msg de erro
+        if device(text='A Página não está disponível no momento').exists(timeout=5):
+            device(text='Recarregar')
+            sleep(2)
+            device.swipe(0.498, 0.283, 0.501, 0.892)
+
         # Clicar em Criar nova conta
         try:
             device(text='Criar nova conta').wait(15)
@@ -54,6 +60,12 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
 
         except:
             pass
+
+        # se aparecer a msg de erro
+        if device(text='A Página não está disponível no momento').exists(timeout=5):
+            device(text='Recarregar')
+            sleep(2)
+            device.swipe(0.498, 0.283, 0.501, 0.892)
 
         sleep(2)
 
@@ -185,7 +197,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
 
         # Caso o usuário ja exista...
         seletor = f'O nome de usuário {usuario} não está disponível.'
-        if device(text=seletor).wait(5):
+        if device(text=seletor).exists(5):
             device(className='android.view.ViewGroup')[0].click()
             mensagem_atencao('> Número de usuário já existe! Tentando outro.')
 
@@ -217,6 +229,12 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
         criou = False
         for x in range(15):
             sleep(1)
+            if device(text='Fazer uma apelação').exists:
+                mensagem_erro('> CONTA NÃO FOI CRIADA!')
+                device.app_clear('com.excelliance.multiaccounts')
+                criou = False
+                break
+
             if device(text='Adicione uma foto do perfil').exists:
                 mensagem_sucesso('> CONTA CRIADA COM SUCESSO!')
                 contador_contas += 1

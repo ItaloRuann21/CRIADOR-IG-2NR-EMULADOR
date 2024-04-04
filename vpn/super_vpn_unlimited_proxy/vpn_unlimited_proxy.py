@@ -3,7 +3,6 @@ from time import sleep
 
 from Images.ManipularImagens import Imagem
 from mensagens.mensagens import mensagem_normal
-from vpn.paises_fast_vpn_freedom import paises_fast_vpn
 
 
 def vpn_unlimited_proxy(device):
@@ -17,8 +16,11 @@ def vpn_unlimited_proxy(device):
 
         # ACCEPT AND CONTINUE
         imagem = Imagem(device)
-        imagem.clicar_na_imagem(
-            './Images/super_vpn_unlimited/accept_and_continue.png')
+        try:
+            imagem.clicar_na_imagem(
+                './Images/super_vpn_unlimited/accept_and_continue.png')
+        except:
+            device(text='ACCEPT AND CONTINUE').click()
 
         # Continuar com anúncios
         imagem.clicar_na_imagem(
@@ -34,6 +36,7 @@ def vpn_unlimited_proxy(device):
         imagem.clicar_na_imagem(
             './Images/super_vpn_unlimited/recarregar.png')
         sleep(2)
+
         # Clicando em lugares aleatorios
         device.click(0.058, 0.649)
 
@@ -43,6 +46,7 @@ def vpn_unlimited_proxy(device):
 
         # Verificar se conectou com sucesso
         if device(text='Conectado com sucesso').wait(30):
+            mensagem_normal('> VPN conectada.')
             device.press('home')
             return True
 
