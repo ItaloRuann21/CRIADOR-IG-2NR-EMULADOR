@@ -25,8 +25,8 @@ def criando_numero(device):
             device(text='Google').click()
 
         # Escolher a primeira conta
-        if device(className='android.widget.LinearLayout')[0].exists(timeout=30):
-            device(className='android.widget.LinearLayout')[0].click()
+        if device(resourceId='com.google.android.gms:id/account_name').wait(30):
+            device(resourceId='com.google.android.gms:id/account_name').click()
 
         # Clicar no Icone de Criar numero
         try:
