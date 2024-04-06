@@ -3,3 +3,4 @@ setuptools
 opencv-python
 termcolor
 playwright
+pyinstaller

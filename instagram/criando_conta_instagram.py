@@ -38,6 +38,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
         if device(focused=True).exists:
             device(focused=True).set_text(numero)
             mensagem_normal('< Número preenchido.')
+            mensagem_normal('< Aguarde!')
 
         sleep(2)
 
@@ -222,6 +223,9 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
         imagem.clicar_na_imagem('./Images/concordo.png')
         if device(text='Concordo').exists(15):
             imagem.clicar_na_imagem('./Images/concordo.png')
+
+            if device(text='Concordo').exists(15):
+                imagem.clicar_na_imagem('./Images/concordo.png')
 
         sleep(2)
 

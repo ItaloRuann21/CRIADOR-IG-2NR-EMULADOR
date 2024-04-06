@@ -1,11 +1,9 @@
 from time import sleep
 
-import cv2
-
 from clonador.permissoes_varias_contas import \
     aceitando_permissoes_varias_contas
 from Images.ManipularImagens import Imagem
-from mensagens.mensagens import mensagem_normal, mensagem_sucesso
+from mensagens.mensagens import mensagem_normal
 
 
 def configurar_varias_contas(device):
@@ -44,24 +42,27 @@ def configurar_varias_contas(device):
         sleep(2)
 
         # Se aparecer anuncio
+        imagem = Imagem(device)
         mensagem_normal('> Verificando se tem anúncios')
-        if device(text='Consent').wait(5):
-            device(text='Consent').click()
+        if device(text='Consent').exists(timeout=10):
+            imagem.clicar_na_imagem('./Images/varias_contas/Consent.png')
+            mensagem_normal('> Clicou no anúncio.')
 
             # Se nao iniciar de primeira e aparecer aplicativo do instagram, clica.
-            if device(text='Instagram').wait(5):
+            if device(text='Instagram').exists(5):
                 device(text='Instagram').click()
 
         # Se nao iniciar de primeira e aparecer aplicativo do instagram, clica.
-        if device(text='Instagram').wait(5):
+        if device(text='Instagram').exists(5):
             device(text='Instagram').click()
 
         # Verificar se existe o erro de idioma
-        if device(text='Continuar em inglês (EUA)').exists(5):
+        mensagem_normal('> Verificando erro de idioma')
+        if device(text='Continuar em inglês (EUA)').exists(10):
             device(text='Continuar em inglês (EUA)').click()
 
         # Clicar em Criar nova conta
-        device(description='Criar nova conta').wait(35)
+        device(description='Criar nova conta').exists(30)
         device(description='Criar nova conta').click()
         mensagem_normal('> Instagram clonado!')
 
