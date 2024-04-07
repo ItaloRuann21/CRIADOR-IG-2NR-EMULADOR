@@ -30,6 +30,9 @@ def main():
     # Apagando o atx do aparelho
     system('adb shell pm uninstall com.github.uiautomator')
 
+    # instalando atx
+    device.app_install('./apks/app-uiautomator.apk')
+
     mensagem_atencao('Iniciando automação...')
     sleep(1)
     mensagem_carregamento('Carregando...')
