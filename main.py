@@ -27,12 +27,6 @@ def main():
 
     device = u2.connect(f'127.0.0.1:{porta}')  # Conectar ao UiAutomator2
 
-    # Apagando o atx do aparelho
-    system('adb shell pm uninstall com.github.uiautomator')
-
-    # instalando atx
-    device.app_install('./apks/app-uiautomator.apk')
-
     mensagem_atencao('Iniciando automação...')
     sleep(1)
     mensagem_carregamento('Carregando...')
