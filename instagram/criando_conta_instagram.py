@@ -221,17 +221,17 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
 
         # Concordo
         imagem.clicar_na_imagem('./Images/concordo.png')
-        if device(text='Concordo').exists(15):
+        if device(text='Concordo').exists(timeout=20):
             imagem.clicar_na_imagem('./Images/concordo.png')
 
-            if device(text='Concordo').exists(15):
+            if device(text='Concordo').exists(timeout=20):
                 imagem.clicar_na_imagem('./Images/concordo.png')
 
         sleep(2)
 
         # Se apareceu isso, a conta foi criada!
         criou = False
-        for x in range(15):
+        for x in range(60):
             sleep(1)
             if device(text='Fazer uma apelação').exists:
                 mensagem_erro('> CONTA NÃO FOI CRIADA!')
@@ -249,7 +249,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
                 criou = True
                 break
 
-            if device(text='Adicionar foto').wait(10):
+            if device(text='Adicionar foto').exists:
                 mensagem_sucesso('> CONTA CRIADA COM SUCESSO!')
                 contador_contas += 1
                 print(colored('Quantidade criadas: ', 'yellow') +
@@ -259,7 +259,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
                 criou = True
                 break
 
-            if device(text='Pular').wait(10):
+            if device(text='Pular').exists:
                 mensagem_sucesso('> CONTA CRIADA COM SUCESSO!')
                 contador_contas += 1
                 print(colored('Quantidade criadas: ', 'yellow') +

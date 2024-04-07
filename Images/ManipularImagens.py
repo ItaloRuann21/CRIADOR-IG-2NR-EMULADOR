@@ -23,7 +23,8 @@ class Imagem:
         imagem_salva = cv2.imread(caminho_imagem)
 
         try:
-            for x in range(30):
+            tentativas = 0
+            while tentativas < 10:  # Espera por até 30 segundos
                 # Captura a tela do dispositivo Android usando uiautomator2
                 captura_dispositivo = self.device.screenshot(format='opencv')
 
@@ -35,8 +36,13 @@ class Imagem:
                 if result[match_position[1]][match_position[0]] > 0.6:
                     # Clique na posição encontrada
                     self.device.click(match_position[0], match_position[1])
-                    break
-            return True
+                    return True  # Retorna True se clicou com sucesso
+
+                # Aguarda 1 segundo antes de tentar novamente
+                sleep(1)
+                tentativas += 1
+
+            return False  # Retorna False se não clicou após 30 segundos
         except:
             return False
 

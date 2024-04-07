@@ -1,3 +1,4 @@
+from os import system
 from random import choice
 from time import sleep
 
@@ -25,6 +26,9 @@ def main():
     criacao, porta = configuracao()
 
     device = u2.connect(f'127.0.0.1:{porta}')  # Conectar ao UiAutomator2
+
+    # Apagando o atx do aparelho
+    system('adb shell pm uninstall com.github.uiautomator')
 
     mensagem_atencao('Iniciando automação...')
     sleep(1)

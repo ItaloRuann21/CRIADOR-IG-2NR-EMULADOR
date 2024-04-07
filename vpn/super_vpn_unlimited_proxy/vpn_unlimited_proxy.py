@@ -27,11 +27,9 @@ def vpn_unlimited_proxy(device):
             './Images/super_vpn_unlimited/continuar_com_anuncio.png')
 
         # Se aparecer anuncio na vpn (para uso em vps)
-        if imagem.esperar_imagem(
-                './Images/super_vpn_unlimited/consentir.png'):
-            mensagem_normal('> Anúncio existe na vps unlimited')
-            imagem.clicar_na_imagem(
-                './Images/super_vpn_unlimited/consentir.png')
+        imagem.clicar_na_imagem(
+            './Images/super_vpn_unlimited/consentir.png')
+        mensagem_normal('> Clicando no anúncio da vpn unlimited proxy.')
 
         # Localização mais rápida
         imagem.clicar_na_imagem(

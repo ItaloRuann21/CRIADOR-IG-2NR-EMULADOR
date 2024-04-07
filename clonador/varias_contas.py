@@ -41,30 +41,34 @@ def configurar_varias_contas(device):
         device(text='OK').click()
         sleep(2)
 
-        # Se aparecer anuncio
-        imagem = Imagem(device)
-        mensagem_normal('> Verificando se tem anúncios')
-        if device(text='Consent').exists(timeout=10):
-            imagem.clicar_na_imagem('./Images/varias_contas/Consent.png')
-            mensagem_normal('> Clicou no anúncio.')
+        if device(description='Criar nova conta').exists(30):
+            device(description='Criar nova conta').click()
+            return True
+        else:
+            # Se aparecer anuncio
+            imagem = Imagem(device)
+            mensagem_normal('> Verificando se tem anúncios')
+            if device(text='Consent').exists(timeout=10):
+                imagem.clicar_na_imagem('./Images/varias_contas/Consent.png')
+                mensagem_normal('> Clicou no anúncio.')
+
+                # Se nao iniciar de primeira e aparecer aplicativo do instagram, clica.
+                if device(text='Instagram').exists(5):
+                    device(text='Instagram').click()
 
             # Se nao iniciar de primeira e aparecer aplicativo do instagram, clica.
             if device(text='Instagram').exists(5):
                 device(text='Instagram').click()
 
-        # Se nao iniciar de primeira e aparecer aplicativo do instagram, clica.
-        if device(text='Instagram').exists(5):
-            device(text='Instagram').click()
+            # Verificar se existe o erro de idioma
+            mensagem_normal('> Verificando erro de idioma')
+            if device(text='Continuar em inglês (EUA)').exists(10):
+                device(text='Continuar em inglês (EUA)').click()
 
-        # Verificar se existe o erro de idioma
-        mensagem_normal('> Verificando erro de idioma')
-        if device(text='Continuar em inglês (EUA)').exists(10):
-            device(text='Continuar em inglês (EUA)').click()
-
-        # Clicar em Criar nova conta
-        device(description='Criar nova conta').exists(30)
-        device(description='Criar nova conta').click()
-        mensagem_normal('> Instagram clonado!')
+            # Clicar em Criar nova conta
+            device(description='Criar nova conta').exists(30)
+            device(description='Criar nova conta').click()
+            mensagem_normal('> Instagram clonado!')
 
         return True
     except Exception as erro:
