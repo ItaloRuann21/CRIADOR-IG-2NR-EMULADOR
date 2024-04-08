@@ -6,7 +6,7 @@ from mensagens.mensagens import mensagem_erro, mensagem_normal
 
 
 def paises_urban():
-    arquivo = open('./vpn/urban_vpnpaises_urban.txt', 'r', encoding='utf8')
+    arquivo = open('./vpn/urban_vpn/paises_urban.txt', 'r', encoding='utf8')
     ler_arquivos = arquivo.readlines()
     paises = choice(ler_arquivos).strip()
     return paises
@@ -22,6 +22,8 @@ def urban_vpn(device):
         # Abrir urban vpn
         mensagem_normal('> Conectando na Urban VPN')
         device.app_start('com.urbanvpn.android', use_monkey=True)
+
+        # Instanciando a classe Imagem
 
         # Choose Free
         if device(text='Choose Free').exists(timeout=30):
@@ -41,9 +43,10 @@ def urban_vpn(device):
         # Pesquisar pais
         paises = paises_urban()
         mensagem_normal('> País escolhido da urban vpn: ' + paises)
-        if device(resourceId='com.urbanvpn.android:id/searchView').exists(timeout=30):
-            device(resourceId='com.urbanvpn.android:id/searchView').click()
-            device(resourceId='com.urbanvpn.android:id/searchView').set_text(paises)
+        if device(className='android.widget.EditText').exists(timeout=30):
+            device(className='android.widget.EditText').click()
+            device(className='android.widget.EditText').set_text(paises)
+
         sleep(2)
 
         # Clicar no país
@@ -56,7 +59,7 @@ def urban_vpn(device):
         sleep(2)
 
         # Se a vpnc chegar na contagem de 5 segundos, então conectou
-        if device(text='00 : 00 : 05').exists(timeout=7):
+        if device(text='00 : 00 : 05').exists(timeout=30):
             return 'VPN Conectada!'
 
         return True

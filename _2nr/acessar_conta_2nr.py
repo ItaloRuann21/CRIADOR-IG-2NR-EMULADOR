@@ -5,7 +5,7 @@ from mensagens.mensagens import mensagem_erro, mensagem_normal
 from .permissoes_2nr import aceitando_permissoes_2nr
 
 
-def apagar_conta_2nr(device):
+def acessar_conta_2nr(device):
     try:
 
         mensagem_normal('> Limpando dados do 2NR')
@@ -50,6 +50,20 @@ def apagar_conta_2nr(device):
                 device(text='Yes').click()
 
         mensagem_normal('> Conta deletada com sucesso.')
+        mensagem_normal('> Entrando novamente no 2nr.')
+
+        # Clicando em Login
+        if device(text='LOGIN').exists(timeout=30):
+            device(text='LOGIN').click()
+        sleep(1)
+
+        # Clicar em Google
+        if device(text='Google').exists(timeout=30):
+            device(text='Google').click()
+
+        # Escolher a primeira conta
+        if device(resourceId='com.google.android.gms:id/account_name').wait(30):
+            device(resourceId='com.google.android.gms:id/account_name').click()
 
         return True
     except Exception as erro:

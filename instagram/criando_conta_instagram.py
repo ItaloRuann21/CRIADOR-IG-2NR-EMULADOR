@@ -75,7 +75,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
             sleep(1)
             # Se aparecer Ocorreu um erro. Tente novamente mais tarde.
             if device(text='Ocorreu um erro. Tente novamente mais tarde.').exists:
-                mensagem_atencao('> Esse número já recebeu muitos SMS.')
+                mensagem_atencao('> Erro no número. Trocando IP.')
                 return False
 
             # elif device(text='A Página não está disponível no momento').wait():
@@ -91,7 +91,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
         mensagem_normal('> Código chegou: ' + str(codigo))
 
         if not codigo:
-            return False
+            return 1000
 
         sleep(2)
 
@@ -120,6 +120,10 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
         except:
             mensagem_erro('> Não foi possível adicionar senha')
             return False
+
+        # Esta senha corresponde à sua conta existente
+        if device(text='Esta senha corresponde à sua conta existente').exists(timeout=10):
+            device(text='CRIAR NOVA CONTA').click()
 
         sleep(2)
 
@@ -221,10 +225,10 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
 
         # Concordo
         imagem.clicar_na_imagem('./Images/concordo.png')
-        if device(text='Concordo').exists(timeout=20):
+        if device(text='Concordo').exists(timeout=30):
             imagem.clicar_na_imagem('./Images/concordo.png')
 
-            if device(text='Concordo').exists(timeout=20):
+            if device(text='Concordo').exists(timeout=30):
                 imagem.clicar_na_imagem('./Images/concordo.png')
 
         sleep(2)

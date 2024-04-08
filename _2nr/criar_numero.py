@@ -8,31 +8,11 @@ from utils.gerar_nome_numero import nome_do_numero
 def criando_numero(device):
     try:
 
-        # Sair do 2nr
-        mensagem_normal('> Criando número no 2nr')
-        device.app_stop('pl.rs.sip.softphone.newapp')
-
-        # Abre o 2nr
-        device.app_start('pl.rs.sip.softphone.newapp', use_monkey=True)
-
-        # Clicando em Login
-        mensagem_normal('> Fazendo login no 2nr')
-        if device(text='LOGIN').exists(timeout=30):
-            device(text='LOGIN').click()
-
-        # Clicar em Google
-        if device(text='Google').exists(timeout=30):
-            device(text='Google').click()
-
-        # Escolher a primeira conta
-        if device(resourceId='com.google.android.gms:id/account_name').wait(30):
-            device(resourceId='com.google.android.gms:id/account_name').click()
-
         # Clicar no Icone de Criar numero
         try:
-            seletor = 'pl.rs.sip.softphone.newapp:id/addNumber'
-            device(resourceId=seletor).wait(30)
-            device(resourceId=seletor).click()
+            seletor = 'Add button'
+            if device(description=seletor).exists(timeout=30):
+                device(description=seletor).click()
         except Exception as erro:
             mensagem_erro('> Erro no seletor de Criar número no 2nr')
             print(erro)
