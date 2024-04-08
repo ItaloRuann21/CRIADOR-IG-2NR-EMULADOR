@@ -96,8 +96,11 @@ def main():
                 trocar_ip()
                 continue
             # Se o código não chegou, saia do loop for
-            if res == 1000:
+            if res == 1:
                 break
+            # Se criou, continua o lop
+            if res == 3:
+                continue
         else:
             continue  # Continua o lop while
 

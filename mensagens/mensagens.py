@@ -1,15 +1,19 @@
-
 import sys
 from time import sleep
 
-from termcolor import colored
+from colorama import Back, Fore, Style, init
+
+# Inicializa o colorama
+init()
 
 
 def mensagem_normal(mensagem):
     print(mensagem)
 
+
 def mensagem_sucesso(mensagem):
-    print(colored(mensagem, 'green'))
+    print(Fore.GREEN + mensagem + Style.RESET_ALL)
+
 
 def mensagem_carregamento(mensagem, duracao=1):
     carregamento = ['|', '/', '-', '\\']
@@ -20,9 +24,10 @@ def mensagem_carregamento(mensagem, duracao=1):
             sys.stdout.flush()
             sleep(0.1)
 
+
 def mensagem_erro(mensagem):
-    print(colored(mensagem, 'red'))
-    
+    print(Fore.RED + mensagem + Style.RESET_ALL)
+
+
 def mensagem_atencao(mensagem):
-    print(colored(mensagem, 'yellow'))
-    
+    print(Fore.YELLOW + mensagem + Style.RESET_ALL)

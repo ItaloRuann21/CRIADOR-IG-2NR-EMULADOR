@@ -1,7 +1,7 @@
 from random import randint
 from time import sleep
 
-from termcolor import colored
+from colorama import Back, Fore, Style, init
 
 from _2nr.pegar_codigo import pegar_codigo
 from contas import contas_criadas, nao_criou
@@ -70,17 +70,11 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
 
         sleep(2)
 
-        # Verificando se existe algum dos erros apos adicionar numero
-        for x in range(10):
-            sleep(1)
-            # Se aparecer Ocorreu um erro. Tente novamente mais tarde.
-            if device(text='Ocorreu um erro. Tente novamente mais tarde.').exists:
-                mensagem_atencao('> Erro no número. Trocando IP.')
-                return False
-
-            # elif device(text='A Página não está disponível no momento').wait():
-            #     mensagem_atencao('> Página indisponível, trocando VPN.')
-            #     return False
+        # Se aparecer Ocorreu um erro. Tente novamente mais tarde.
+        if device(text='Ocorreu um erro. Tente novamente mais tarde.').exists(timeout=5):
+            mensagem_atencao(
+                '> Erro no número. Trocando IP.')
+            return False
 
         sleep(2)
 
@@ -91,7 +85,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
         mensagem_normal('> Código chegou: ' + str(codigo))
 
         if not codigo:
-            return 1000
+            return 1
 
         sleep(2)
 
@@ -121,21 +115,20 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
             mensagem_erro('> Não foi possível adicionar senha')
             return False
 
-        # Esta senha corresponde à sua conta existente
-        if device(text='Esta senha corresponde à sua conta existente').exists(timeout=10):
-            device(text='CRIAR NOVA CONTA').click()
-
         sleep(2)
 
         # Clicar em avançar
-        device(text='Avançar').wait(30)
+        device(text='Avançar').wait(10)
         device(text='Avançar').click()
-
         sleep(2)
+
+        mensagem_normal('> Verificando se existe uma conta com esse número.')
+        imagem.clicar_na_imagem(
+            './Images/instagram/clicar_criar_nova_conta.png')
 
         # Clicar em Agora não
         try:
-            device(text='Agora não').wait(30)
+            device(text='Agora não').wait(10)
             device(text='Agora não').click()
         except:
             pass
@@ -238,40 +231,40 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
         for x in range(60):
             sleep(1)
             if device(text='Fazer uma apelação').exists:
-                mensagem_erro('> CONTA NÃO FOI CRIADA!')
+                mensagem_erro('> NÃO CRIOU. CONTA SUSPENSA!')
                 device.app_clear('com.excelliance.multiaccounts')
                 criou = False
-                break
+                return 3
 
             if device(text='Adicione uma foto do perfil').exists:
                 mensagem_sucesso('> CONTA CRIADA COM SUCESSO!')
                 contador_contas += 1
-                print(colored('Quantidade criadas: ', 'yellow') +
-                      colored(str(contador_contas), 'green'))
+                print(Fore.YELLOW + 'Quantidade criadas: ' + Style.RESET_ALL +
+                      Fore.GREEN + str(contador_contas) + Style.RESET_ALL)
                 contas_criadas(usuario, senha)
                 device.app_clear('com.excelliance.multiaccounts')
                 criou = True
-                break
+                return 3
 
             if device(text='Adicionar foto').exists:
                 mensagem_sucesso('> CONTA CRIADA COM SUCESSO!')
                 contador_contas += 1
-                print(colored('Quantidade criadas: ', 'yellow') +
-                      colored(str(contador_contas), 'green'))
+                print(Fore.YELLOW + 'Quantidade criadas: ' + Style.RESET_ALL +
+                      Fore.GREEN + str(contador_contas) + Style.RESET_ALL)
                 contas_criadas(usuario, senha)
                 device.app_clear('com.excelliance.multiaccounts')
                 criou = True
-                break
+                return 3
 
             if device(text='Pular').exists:
                 mensagem_sucesso('> CONTA CRIADA COM SUCESSO!')
                 contador_contas += 1
-                print(colored('Quantidade criadas: ', 'yellow') +
-                      colored(str(contador_contas), 'green'))
+                print(Fore.YELLOW + 'Quantidade criadas: ' + Style.RESET_ALL +
+                      Fore.GREEN + str(contador_contas) + Style.RESET_ALL)
                 contas_criadas(usuario, senha)
                 device.app_clear('com.excelliance.multiaccounts')
                 criou = True
-                break
+                return 3
 
         if not criou:
             mensagem_erro(
