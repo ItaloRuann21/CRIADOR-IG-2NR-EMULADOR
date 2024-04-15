@@ -18,180 +18,147 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
 
         global contador_contas
 
-        # # Limpar memoria ram
-        # device.press('control + shift + t')
-
-        # Instancia de Imagem para manipular
-        imagem = Imagem(device)
-
         # Clicar em Adicionar numero 2nr
-        try:
-            mensagem_normal('> Adicionando número 2nr')
-            device(className='android.widget.EditText')[0].wait(30)
-            device(className='android.widget.EditText')[0].click()
-        except:
+        mensagem_normal('> Adicionando número 2nr')
+        resposta = device(description='Número do celular').exists(timeout=30)
+        if resposta:
+            device(description='Número do celular').click()
+        else:
             mensagem_erro(
                 '> Não foi possível clicar no campo do input e adicionar o número')
             return False
 
         # Preecnher numero
-        if device(focused=True).exists:
+        resposta = device(focused=True).exists(timeout=30)
+        if resposta:
             device(focused=True).set_text(numero)
             mensagem_normal('< Número preenchido.')
-            mensagem_normal('< Aguarde!')
-
-        sleep(2)
+        else:
+            mensagem_erro('> Não foi possivel adicionar número.')
+            return False
 
         # Clicar em Avançar
-        device(text='Avançar').wait(30)
-        device(text='Avançar').click()
+        def avançar():
+            resposta = device(text='Avançar').exists(timeout=30)
+            if resposta:
+                device(text='Avançar').click()
+            else:
+                mensagem_erro('> Não clicou em avançar.')
+                return False
+        avançar()
 
-        sleep(2)
-
-        # se aparecer a msg de erro
-        if device(text='A Página não está disponível no momento').exists(timeout=5):
-            device(text='Recarregar')
-            sleep(2)
-            device.swipe(0.498, 0.283, 0.501, 0.892)
-
-        # Clicar em Criar nova conta
-        try:
-            device(text='Criar nova conta').wait(15)
+        # Você está tentando entrar?
+        resposta = device(text='Criar nova conta').exists(timeout=30)
+        if resposta:
+            mensagem_normal('> Clicando em Criar nova conta.')
             device(text='Criar nova conta').click()
 
-        except:
-            pass
-
-        # se aparecer a msg de erro
-        if device(text='A Página não está disponível no momento').exists(timeout=5):
-            device(text='Recarregar')
-            sleep(2)
-            device.swipe(0.498, 0.283, 0.501, 0.892)
-
-        sleep(2)
-
         # Se aparecer Ocorreu um erro. Tente novamente mais tarde.
-        if device(text='Ocorreu um erro. Tente novamente mais tarde.').exists(timeout=5):
+        if device(text='Ocorreu um erro. Tente novamente mais tarde.').exists(timeout=7):
             mensagem_atencao(
                 '> Erro no número. Trocando IP.')
             return False
-
-        sleep(2)
 
         mensagem_normal('> Código enviado, esperando.')
         # Instanciando função para pegar codigo
         codigo = False
         codigo = pegar_codigo(device)
-        mensagem_normal('> Código chegou: ' + str(codigo))
-
+        if codigo:
+            mensagem_normal('> Código chegou: ' + str(codigo))
         if not codigo:
+            mensagem_erro('> Código não chegou no 2nr.')
             return 1
 
-        sleep(2)
-
         # Caso apareça o codigo de confirmação, digita o codigo
-        device(text='Código de confirmação').wait(30)
-        if device(focused=True).exists:
+        resposta = device(text='Código de confirmação').exists(timeout=30)
+        if resposta:
             device(focused=True).set_text(codigo)
             mensagem_normal('> Código adicionado no input')
+        else:
+            mensagem_erro('> Não foi possível adicionar o código.')
+            return False
 
-        sleep(2)
-
-        # Clicar em avançar
-        try:
-            device(text='Avançar').wait(30)
-            device(text='Avançar').click()
-        except:
-            pass
-
-        sleep(2)
+        # Clicar em Avançar
+        avançar()
 
         # Colocando a senha
-        try:
-            imagem.clicar_na_imagem('./Images/senha_visivel.png')
+        resposta = device(focused=True).exists(timeout=30)
+        if resposta:
             device(focused=True).set_text(senha)
             mensagem_normal('> Senha adicionada no campo do input.')
-        except:
+        else:
             mensagem_erro('> Não foi possível adicionar senha')
             return False
 
-        sleep(2)
+        # Clicar em Avançar
+        avançar()
 
-        # Clicar em avançar
-        device(text='Avançar').wait(10)
-        device(text='Avançar').click()
-        sleep(2)
+        # Verificando se existe uma conta com esse número.
+        resposta = device(text='CRIAR NOVA CONTA').exists(timeout=7)
+        if resposta:
+            device(text='CRIAR NOVA CONTA').click()
 
-        mensagem_normal('> Verificando se existe uma conta com esse número.')
-        imagem.clicar_na_imagem(
-            './Images/instagram/clicar_criar_nova_conta.png')
-
-        # Clicar em Agora não
-        try:
-            device(text='Agora não').wait(10)
+        # Salvar suas informações de login?
+        resposta = device(
+            text='Salvar suas informações de login?').exists(timeout=30)
+        if resposta:
             device(text='Agora não').click()
-        except:
-            pass
-
-        sleep(2)
 
         # Clicar em DEFINIR
-        if device(text='DEFINIR').wait(30):
+        resposta = device(text='DEFINIR').exists(timeout=30)
+        if resposta:
             device(text='DEFINIR').click()
         else:
-            imagem.clicar_na_imagem('./Images/definir.png')
-
-        sleep(2)
+            mensagem_erro('> Erro ao clicar em DEFINIR')
+            return False
 
         # Clicar em avançar
-        try:
-            device(text='Avançar').wait(30)
-            device(text='Avançar').click()
-        except:
-            pass
-
-        sleep(2)
+        avançar()
 
         # Se aparecer o erro
-        if device(text='Parece que você inseriu informações incorretas. Use sua data de nascimento verdadeira.').wait(30):
-            device(text='Avançar').wait(30)
+        resposta = device(
+            text='Parece que você inseriu informações incorretas. Use sua data de nascimento verdadeira.').exists(timeout=30)
+        if resposta:
             device(text='Avançar').click()
-
-        sleep(2)
+        else:
+            mensagem_erro('> Erro ao clicar em avançar')
+            return False
 
         # Definindo o ano
         mensagem_normal('> Definindo idade')
         ano = randint(18, 60)
-        device(className='android.widget.EditText').wait(30)
-        device(className='android.widget.EditText').set_text(str(ano))
-
-        sleep(2)
+        resposta = device(
+            className='android.widget.EditText').exists(timeout=30)
+        if resposta:
+            device(className='android.widget.EditText').set_text(str(ano))
+        else:
+            mensagem_erro('> Não adicionou a idade no input.')
+            return False
 
         # Clicando em avançar
-        device(text='Avançar').wait(30)
-        device(text='Avançar').click()
-
-        sleep(2)
+        avançar()
 
         # Se aparecer essa msg
-        device(text='OK').wait(30)
-        device(text='OK').click()
-
-        sleep(2)
+        resposta = device(text='OK').exists(timeout=30)
+        if resposta:
+            device(text='OK').click()
+        else:
+            mensagem_erro('> Não clicou em OK')
+            return False
 
         # Definindo o nome completo
         mensagem_normal('> Digitando o nome completo.')
-        imagem.clicar_na_imagem('./Images/nome_completo.png')
-        device(focused=True).set_text(nome)
-        mensagem_normal('> Nome completo: ' + nome)
-
-        sleep(2)
+        resposta = device(focused=True).exists(timeout=30)
+        if resposta:
+            device(focused=True).set_text(nome)
+            mensagem_normal('> Nome completo: ' + nome)
+        else:
+            mensagem_erro(
+                '> Não foi possível adicionar o nome completo no input')
+            return False
 
         # Clicar em avançar
-        device(text='Avançar').wait(30)
-        device(text='Avançar').click()
-
-        sleep(2)
+        avançar()
 
         # Caso o usuário ja exista...
         seletor = f'O nome de usuário {usuario} não está disponível.'
@@ -205,36 +172,25 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
             usuario = device(className='android.widget.EditText').get_text()
             mensagem_normal('> Nome de usuário definido: ' + usuario)
 
-        sleep(2)
-
-        # Clicar em avançar
-        device(text='Avançar').wait(30)
-        device(text='Avançar').click()
-
-        sleep(2)
+        # Clicando em avançar
+        avançar()
 
         # Confirmar termos de uso
         mensagem_normal('> Concordando com os termos de uso.')
 
-        # Concordo
-        imagem.clicar_na_imagem('./Images/concordo.png')
-        if device(text='Concordo').exists(timeout=30):
-            imagem.clicar_na_imagem('./Images/concordo.png')
-
-            if device(text='Concordo').exists(timeout=30):
-                imagem.clicar_na_imagem('./Images/concordo.png')
-
-        sleep(2)
-
         # Se apareceu isso, a conta foi criada!
         criou = False
         for x in range(60):
-            sleep(1)
+
+            # Clicando em concordo
+            if device(text='Concordo').exists:
+                device(text='Concordo').click()
+
             if device(text='Fazer uma apelação').exists:
                 mensagem_erro('> NÃO CRIOU. CONTA SUSPENSA!')
                 device.app_clear('com.excelliance.multiaccounts')
                 criou = False
-                return 3
+                return 2
 
             if device(text='Adicione uma foto do perfil').exists:
                 mensagem_sucesso('> CONTA CRIADA COM SUCESSO!')
@@ -265,6 +221,8 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
                 device.app_clear('com.excelliance.multiaccounts')
                 criou = True
                 return 3
+
+            sleep(1)
 
         if not criou:
             mensagem_erro(

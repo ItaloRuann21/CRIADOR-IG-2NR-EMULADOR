@@ -1,7 +1,29 @@
 
 
+import shutil
+
+from mensagens.mensagens import mensagem_atencao, mensagem_sucesso
+
+
+def centralizar_texto(texto, largura_terminal):
+    espacos = (largura_terminal - len(texto)) // 2
+    return ' ' * espacos + texto
+
+
 def configuracao():
-    User_porta = input('Digite a porta do emulador\n> ')
+    largura_terminal = shutil.get_terminal_size().columns
+
+    mensagem_sucesso(centralizar_texto(
+        'Criador 2NR + IG by Italo and Júlia - v2.0', largura_terminal))
+    print('')
+    mensagem_atencao('Digite a porta do emulador:')
+    User_porta = input('> ')
+    print('')
     porta = str(User_porta)
 
-    return porta
+    mensagem_atencao('Escolha a VPN padrão:')
+    definir_vpn = input(
+        '\n1- SurfSharke\n2- Fast VPN Freedom\n3- Super VPN Unlimited Proxy\n4- AVG VPN\n5- Criação com VPN aleatória\n> ')
+    print('')
+
+    return porta, definir_vpn

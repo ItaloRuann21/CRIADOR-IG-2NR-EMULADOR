@@ -1,140 +1,28 @@
-Albânia
-Argélia
-Andorra
-Argentina
-Armênia
-Perth
-Brisbane
-Adelaide
-Áustria
-Azerbaijão
-Bahamas
-Bangladesh
-Antuérpia
-Bruxelas
-Belize
-Butão
-Bolívia
-Bósnia e Herzegovina
 Brasil
-Brunei
-Bulgária
-Camboja
-Vancouver
-Montreal
-Toronto
-Chile
-Colômbia
-Costa Rica
-Croácia
-Chipre
-República Checa
-Dinamarca
-Equador
-Egito
-Estônia
-Finlândia
-Paris
-Marselha
-Bordeaux
-Geórgia
-Berlim
-Frankfurt am Main
-Gana
-Grécia
-Gronelândia
-Hong Kong
-Hungria
-Islândia
-Delhi
-Mumbai
-Indonésia
-Irlanda
-Ilha de Man
-Israel
-Roma
-Milão
-Japão
-Cazaquistão
-Laos
-Letônia
-Liechtenstein
-Lituânia
-Luxemburgo
-Região Administrativa
-Malásia
-Malta
-Marrocos
-México
-Moldávia
-Mônaco
-Mongólia
-Montenegro
-Myanmar
-Nepal
-Países Baixos
-Nova Zelândia
-Nigéria
-Macedônia do Norte
-Noruega
-Paquistão
-Panamá
-Paraguai
-Peru
-Filipinas
-Gdansk
-Varsóvia
-Lisboa
-Porto
-Porto Rico
-Romênia
-Arábia Saudita
-Sérvia
-Cingapura
-Eslováquia
-Eslovênia
-África do Sul
-Coreia do Sul
-Madri
-Valência
-Barcelona
-Sri Lanka
-Suécia
-Suíça
-Taiwan
-Tailândia
-Turquia
-Ucrânia
-Emirados Árabes Unidos
-Glasgow
-Manchester
-Edinburgh
-Londres
-Miami
-Tampa
-Atlanta
-Houston
-Charlotte
-Dallas
-Ashburn
-Nova York
-St. Louis
-Latham
-Detroit
-Cidade do Kansas
-Boston
-Buffalo
 Chicago
-Phoenix
+Detroit
+Latham
+Cidade do Kansas
+Buffalo
+Ashburn
+Charlotte
+Atlanta
+Nova York
+Dallas
+Boston
 Denver
-Las Vegas
-Los Angeles
+Houston
+Miami
 Salt Lake City
-San Jose
-São Francisco
+Phoenix
+Las Vegas
 Bend
 Seattle
-Uruguai
-Usbequistão
-Venezuela
-Vietnã
+Los Angeles
+San Jose
+São Francisco
+Nova York #2
+Nova York #5
+Nova York #3
+Nova York #4
+Nova York #1

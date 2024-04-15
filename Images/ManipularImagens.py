@@ -62,10 +62,9 @@ class Imagem:
                 if result[match_position[1]][match_position[0]] > 0.6:
                     self.device.click(match_position[0], match_position[1])
                     # Pequena pausa para permitir que o clique seja processado
-                    sleep(1)
                     return True  # Retorna True se clicou com sucesso
 
-                sleep(2)  # Aguarda 2 segundos antes de tentar novamente
+                sleep(1)  # Aguarda 2 segundos antes de tentar novamente
                 tentativas += 1
 
             return False  # Retorna False se não clicou após 10 tentativas

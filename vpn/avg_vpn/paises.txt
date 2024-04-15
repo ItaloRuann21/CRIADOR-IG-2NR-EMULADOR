@@ -1,0 +1,17 @@
+EUA, Atlanta
+EUA, Boston
+EUA, Chicago
+EUA, Dallas
+EUA, Gotham City
+EUA, Honolulu
+EUA, Jacksonville
+EUA, Las Vegas
+EUA, Los Angeles
+EUA, Miami
+EUA, Nova York
+EUA, Phoenix
+EUA, Salt Lake City
+EUA, Seattle
+EUA, São Francisco
+EUA, Washington DC
+Brasil, São Paulo

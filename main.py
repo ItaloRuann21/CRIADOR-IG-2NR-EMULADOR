@@ -1,5 +1,4 @@
 from os import system
-from random import choice
 from time import sleep
 
 import uiautomator2 as u2
@@ -14,17 +13,17 @@ from mensagens.mensagens import (mensagem_atencao, mensagem_carregamento,
 from utils.gerar_dados_perfil import gerar_dados_perfil
 from utils.gerar_senha_perfil import gerar_senha_perfil
 from utils.parando_aplicativos import forçar_parada
+from vpn.avg_vpn.avg_vpn import avg_vpn_conect
 from vpn.escolher_vpn_aleatoria import escolher_vpn
 from vpn.fast_vpn_freedom.fast_vpn_freedom import fast_vpn_freedom
 from vpn.super_vpn_unlimited_proxy.vpn_unlimited_proxy import \
     vpn_unlimited_proxy
 from vpn.surfsharke.surfshake import conectar_surfshake
-from vpn.urban_vpn.urban_vpn import urban_vpn
 
 
 def main():
     # Configurações de usuário
-    porta = configuracao()
+    porta, definir_vpn = configuracao()
 
     device = u2.connect(f'127.0.0.1:{porta}')  # Conectar ao UiAutomator2
 
@@ -33,9 +32,17 @@ def main():
     mensagem_carregamento('Carregando...')
     print('')
 
-    # Lista de VPNs disponíveis
-    vpns = [conectar_surfshake, urban_vpn,
-            fast_vpn_freedom, vpn_unlimited_proxy]
+    if definir_vpn == '1':
+        vpns = [conectar_surfshake]
+    elif definir_vpn == '2':
+        vpns = [fast_vpn_freedom]
+    elif definir_vpn == '3':
+        vpns = [vpn_unlimited_proxy]
+    elif definir_vpn == '4':
+        vpns = [avg_vpn_conect]
+    elif definir_vpn == '5':
+        vpns = [conectar_surfshake, fast_vpn_freedom,
+                vpn_unlimited_proxy, avg_vpn_conect]
 
     # Lista para rastrear as VPNs já usadas
     vpns_usadas = []
@@ -55,17 +62,12 @@ def main():
 
     while True:
 
-        # Senha
-        senha = gerar_senha_perfil()
-
-        # nome
-        nome, usuario = gerar_dados_perfil()
-
         # Apagando conta 2nr
         quantidade_tentativas = 0
         res = acessar_conta_2nr(device=device)
         if not res:
             while quantidade_tentativas < 4:
+                trocar_ip()
                 res = acessar_conta_2nr(device=device)
                 if res:
                     break
@@ -78,6 +80,13 @@ def main():
             continue
 
         for x in range(5):
+
+            # Senha
+            senha = gerar_senha_perfil()
+
+            # nome
+            nome, usuario = gerar_dados_perfil()
+
             # Configurando varias contas
             quantidade_tentativas = 0
             res = configurar_varias_contas(device=device)
@@ -97,7 +106,12 @@ def main():
                 continue
             # Se o código não chegou, saia do loop for
             if res == 1:
+                trocar_ip()
                 break
+            # Se a conta foi suspensa, troca vpn e continua
+            if res == 2:
+                trocar_ip()
+                continue
             # Se criou, continua o lop
             if res == 3:
                 continue

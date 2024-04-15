@@ -1,7 +1,9 @@
 from time import sleep
 
-from Images.ManipularImagens import Imagem
-from mensagens.mensagens import mensagem_atencao, mensagem_normal
+from mensagens.mensagens import (mensagem_atencao, mensagem_erro,
+                                 mensagem_normal)
+
+from .paises_fast_vpn_freedom import paises_fast_vpn
 
 
 def fast_vpn_freedom(device):
@@ -15,28 +17,56 @@ def fast_vpn_freedom(device):
         # Abrir fast
         device.app_start('easyvpn.free.vpn.unblock.proxy', use_monkey=True)
 
-        # AGREE
-        imagem = Imagem(device)
-        imagem.clicar_na_imagem(
-            './Images/fast_vpn_freedom/accept_and_continue.png')
+        # ACCEPT AND CONTINUE
+        resposta = device(text='ACCEPT AND CONTINUE').exists(timeout=30)
+        if resposta:
+            device(text='ACCEPT AND CONTINUE').click()
+        else:
+            mensagem_erro('> Não clicou em ACCEPT AND CONTINUE')
+            return False
 
-        # Localização mais rápida
         mensagem_normal('> Escolhendo um país aleatório.')
-        if device(resourceId='easyvpn.free.vpn.unblock.proxy:id/tv_fastest_server').exists(timeout=10):
-            device(
-                resourceId='easyvpn.free.vpn.unblock.proxy:id/tv_fastest_server').click()
+        # clicar em Localização mais rápida
+        for x in range(30):
 
-        # Esperar algum seletor da vpn aparecer
-        if device(text='Fastest Location').exists(20):
-            # Clicando no meio
-            device.click(0.061, 0.649)
+            # Se aparecer Alterar servidor, clica
+            if device(text='Alterar servidor').exists:
+                device(text='Alterar servidor').click()
+                break
 
-        # Solicitando Conexão
-        if device(resourceId='android:id/alertTitle').exists(timeout=3):
-            device(text='OK').click()
+            # Se aparecer Localização mais rápida, clica
+            if device(text='Localização mais rápida').exists:
+                device(text='Localização mais rápida').click()
+                break
+
+            sleep(1)
+
+        # Esperar seletor pra saber que carregou todos os paiss
+        resposta = device(text='Fastest Location').exists(timeout=30)
+        if not resposta:
+            return False
+
+        # Escolher um servidor aleatório
+        pais = paises_fast_vpn()
+        mensagem_normal('> País escolhido: ' + pais)
+
+        # Verificando se existe o pais para clicar
+        for x in range(60):
+
+            # Se existe o pais na tela, clica
+            sleep(2)
+            if device(text=pais).exists:
+                device(text=pais).click()
+                break
+
+            # Se não existe, faz um swipe
+            device.swipe(0.482, 0.887, 0.469, 0.353, 0.3)
+
+            sleep(1)
 
         # Verificar se conectou com sucesso
-        if device(text='Conectado com sucesso').wait(30):
+        resposta = device(text='Conectado com sucesso').exists(timeout=10)
+        if resposta:
             mensagem_normal('> VPN conectada.')
             device.press('home')
             return True

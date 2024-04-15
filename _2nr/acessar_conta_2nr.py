@@ -28,26 +28,41 @@ def acessar_conta_2nr(device):
         mensagem_normal('> Fazendo login no 2nr')
         if device(text='LOGIN').exists(timeout=30):
             device(text='LOGIN').click()
+        else:
+            mensagem_erro('> Erro ao clicar em LOGIN.')
+            return False
         sleep(1)
 
         # Clicar em Google
         if device(text='Google').exists(timeout=30):
             device(text='Google').click()
+        else:
+            mensagem_erro('> Erro ao clicar em Google.')
+            return False
 
         # Escolher a primeira conta
         if device(resourceId='com.google.android.gms:id/account_name').wait(30):
             device(resourceId='com.google.android.gms:id/account_name').click()
+        else:
+            mensagem_erro('> Erro ao clicar na primeira conta do google.')
+            return False
 
         # Clicando em configurações
         mensagem_normal('> Deletando conta 2nr.')
         if device(description='Settings').exists(timeout=30):
             device(description='Settings').click()
+        else:
+            mensagem_erro('> Não foi possível clicar em configurações.')
+            return False
 
         # Deletar conta
         if device(text='Delete account').exists(timeout=30):
             device(text='Delete account').click()
             if device(text='Yes').exists(timeout=30):
                 device(text='Yes').click()
+        else:
+            mensagem_erro('> Erro ao tentar deletar a conta.')
+            return False
 
         mensagem_normal('> Conta deletada com sucesso.')
         mensagem_normal('> Entrando novamente no 2nr.')
@@ -55,15 +70,24 @@ def acessar_conta_2nr(device):
         # Clicando em Login
         if device(text='LOGIN').exists(timeout=30):
             device(text='LOGIN').click()
+        else:
+            mensagem_erro('> Erro ao clicar em LOGIN')
+            return False
         sleep(1)
 
         # Clicar em Google
         if device(text='Google').exists(timeout=30):
             device(text='Google').click()
+        else:
+            mensagem_erro('> Erro ao clicar em Google.')
+            return False
 
         # Escolher a primeira conta
         if device(resourceId='com.google.android.gms:id/account_name').wait(30):
             device(resourceId='com.google.android.gms:id/account_name').click()
+        else:
+            mensagem_erro('> Erro ao clicar na primeira conta do google.')
+            return False
 
         return True
     except Exception as erro:
