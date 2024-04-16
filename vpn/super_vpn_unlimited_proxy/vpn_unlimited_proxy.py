@@ -35,11 +35,17 @@ def vpn_unlimited_proxy(device):
             return False
 
         # Continuar com anúncios
-        resposta = device(text='Continuar com anúncios').exists(timeout=30)
-        if resposta:
-            device(text='Continuar com anúncios').click()
-        else:
-            return False
+        for x in range(30):
+
+            # Continuar com anúncios
+            if device(text='Continuar com anúncios').exists:
+                device(text='Continuar com anúncios').click()
+                break
+
+            # Continuar com anúncios
+            if device(text='Prossiga com anúncios e limitações').exists:
+                device(text='Prossiga com anúncios e limitações').click()
+                break
 
         # Se aparecer anuncio na vpn (para uso em vps)
         mensagem_normal('> Escolhendo um país aleatório.')
@@ -62,6 +68,11 @@ def vpn_unlimited_proxy(device):
 
             sleep(1)
 
+        # Esperar seletor pra saber que carregou todos os paiss
+        resposta = device(text='Fastest Location').exists(timeout=30)
+        if not resposta:
+            return False
+
         # Escolher um servidor aleatório
         pais = paises_vpn_unlimited()
         mensagem_normal('> País escolhido: ' + pais)
@@ -76,7 +87,7 @@ def vpn_unlimited_proxy(device):
                 break
 
             # Se não existe, faz um swipe
-            device.swipe(0.482, 0.887, 0.469, 0.353, 0.3)
+            device.swipe(0.472, 0.907, 0.514, 0.431, 0.04)
 
             sleep(1)
 

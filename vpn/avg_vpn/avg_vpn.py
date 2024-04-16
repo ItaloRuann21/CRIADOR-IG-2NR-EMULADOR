@@ -71,28 +71,9 @@ def avg_vpn_conect(device):
                 break
 
             # Se não existe, faz um swipe
-            device.swipe(0.472, 0.907, 0.514, 0.431, 0.03)
+            device.swipe(0.472, 0.907, 0.514, 0.431, 0.04)
 
             sleep(1)
-
-        # for x in range(30):
-
-        #     # Se a vpn estiver desligada, liga
-        #     if device(resourceId='com.avg.android.vpn:id/off').exists:
-        #         device(resourceId='com.avg.android.vpn:id/off').click()
-        #         mensagem_normal('> VPN Ligada')
-        #         break
-
-        #     # Se a vpn ja estiver ligada
-        #     if device(resourceId='com.avg.android.vpn:id/on').exists:
-        #         sleep(1)
-        #         device(resourceId='com.avg.android.vpn:id/on').click()
-        #         sleep(2)
-        #         device(resourceId='com.avg.android.vpn:id/off').click()
-        #         mensagem_normal('> VPN Ligada')
-        #         break
-
-        #     sleep(1)
 
         # Se aparecer ativar a conexão automatica
         if device(text='ATIVAR A CONEXÃO AUTOMÁTICA').exists(timeout=5):

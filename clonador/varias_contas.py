@@ -43,6 +43,7 @@ def configurar_varias_contas(device):
 
         if device(description='Criar nova conta').exists(30):
             device(description='Criar nova conta').click()
+            mensagem_normal('> Instagram clonado!')
             return True
         else:
 
