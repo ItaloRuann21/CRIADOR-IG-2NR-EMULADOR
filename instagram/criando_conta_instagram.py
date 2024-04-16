@@ -25,7 +25,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
             device(description='Número do celular').click()
         else:
             mensagem_erro(
-                '> Não foi possível clicar no campo do input e adicionar o número')
+                '> Não foi possível identificar o elemento de número 2nr. Pagina indisponível.')
             return False
 
         # Preecnher numero
@@ -34,7 +34,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
             device(focused=True).set_text(numero)
             mensagem_normal('< Número preenchido.')
         else:
-            mensagem_erro('> Não foi possivel adicionar número.')
+            mensagem_erro('> Não foi possivel preencher número.')
             return False
 
         # Clicar em Avançar

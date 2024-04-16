@@ -71,7 +71,7 @@ def avg_vpn_conect(device):
                 break
 
             # Se não existe, faz um swipe
-            device.swipe(0.472, 0.907, 0.514, 0.431, 0.04)
+            device.swipe(0.472, 0.907, 0.514, 0.431, 0.05)
 
             sleep(1)
 

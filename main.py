@@ -23,7 +23,7 @@ from vpn.surfsharke.surfshake import conectar_surfshake
 
 def main():
     # Configurações de usuário
-    porta, definir_vpn = configuracao()
+    porta, definir_vpn, quantidade_contas_por_numero = configuracao()
 
     device = u2.connect(f'127.0.0.1:{porta}')  # Conectar ao UiAutomator2
 
@@ -79,7 +79,7 @@ def main():
             trocar_ip()
             continue
 
-        for x in range(5):
+        for x in range(int(quantidade_contas_por_numero)):
 
             # Senha
             senha = gerar_senha_perfil()

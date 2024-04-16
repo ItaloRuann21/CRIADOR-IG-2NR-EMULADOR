@@ -23,7 +23,11 @@ def configuracao():
 
     mensagem_atencao('Escolha a VPN padrão:')
     definir_vpn = input(
-        '\n1- SurfSharke\n2- Fast VPN Freedom\n3- Super VPN Unlimited Proxy\n4- AVG VPN\n5- Criação com VPN aleatória\n> ')
+        '1- SurfSharke\n2- Fast VPN Freedom\n3- Super VPN Unlimited Proxy\n4- AVG VPN\n5- Criação com VPN aleatória\n> ')
     print('')
 
-    return porta, definir_vpn
+    mensagem_atencao('Criar quantas contas com mesmo número?')
+    quantidade_contas_por_numero = input('> ')
+    print('')
+
+    return porta, definir_vpn, quantidade_contas_por_numero
