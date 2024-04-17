@@ -5,7 +5,7 @@ from mensagens.mensagens import (mensagem_erro, mensagem_normal,
 from utils.gerar_nome_numero import nome_do_numero
 
 
-def criando_numero(device):
+def criando_numero(device, velocidade_bot):
     try:
 
         # Clicar no Icone de Criar numero
@@ -17,6 +17,7 @@ def criando_numero(device):
             mensagem_erro('> Erro no seletor de Criar número no 2nr')
             print(erro)
             return False
+        sleep(velocidade_bot)
 
         # Inventar um nome aleatório para o número
         try:
@@ -29,24 +30,29 @@ def criando_numero(device):
             mensagem_erro('> Erro ao gerar nome aleatório no número')
             print(erro)
             return False
+        sleep(velocidade_bot)
 
         # Clicar em SAve
         seletor = 'pl.rs.sip.softphone.newapp:id/save'
         device(resourceId=seletor).wait(30)
         device(resourceId=seletor).click()
+        sleep(velocidade_bot)
 
         #  I agree
         seletor = 'pl.rs.sip.softphone.newapp:id/buttonAgree'
         device(resourceId=seletor).wait(30)
         device(resourceId=seletor).click()
+        sleep(velocidade_bot)
 
         device(resourceId=seletor).wait(30)
         device(resourceId=seletor).click()
+        sleep(velocidade_bot)
 
         # Clicar em Save novamente
         seletor = 'pl.rs.sip.softphone.newapp:id/save'
         device(resourceId=seletor).wait(30)
         device(resourceId=seletor).click()
+        sleep(velocidade_bot)
 
         # Se aparecer a mensagem de verificação com sucesso, então criou o número!
         seletor = 'Successful verification'
@@ -58,6 +64,7 @@ def criando_numero(device):
             else:
                 device.swipe(0.498, 0.308, 0.508, 0.891)
                 contador += 1
+        sleep(velocidade_bot)
 
         # Se aparecer esse seletor, numero foi criado!
         seletor = 'pl.rs.sip.softphone.newapp:id/phoneNumber'
@@ -69,6 +76,7 @@ def criando_numero(device):
             unir_numeros = ''.join(dividir_numeros)
             numero = '+48' + unir_numeros
             mensagem_normal('> Número criado: ' + numero)
+            sleep(velocidade_bot)
 
             return numero
         else:

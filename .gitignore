@@ -3,3 +3,5 @@ __pycache__
 build
 main.spec
 dist
+contas_criadas.txt
+nao_criou.txt

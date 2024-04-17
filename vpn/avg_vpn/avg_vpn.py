@@ -29,20 +29,23 @@ def pais_aleatorio_avg():
     return pais_escolhido.strip()
 
 
-def avg_vpn_conect(device):
+def avg_vpn_conect(device, velocidade_bot):
     try:
 
         # Escolhendo quais paises serão usados
         pais_escolhido = pais_aleatorio_avg()
 
         # Entrar avg
+        sleep(velocidade_bot)
         mensagem_atencao('> Iniciando a AVG VPN')
         device.app_start('com.avg.android.vpn', use_monkey=True)
+        sleep(velocidade_bot)
 
         # Se aparecer mensagem de avaliação de 5 estrelas
         if device(text='Você está recebendo uma experiência 5 estrelas?').exists(timeout=5):
             sleep(1)
             device.press('back')
+        sleep(velocidade_bot)
 
         # Verificando se a vpn está conectada.
         resposta = device(
@@ -50,6 +53,7 @@ def avg_vpn_conect(device):
         if resposta:
             device(resourceId='com.avg.android.vpn:id/on').click()
             mensagem_normal('> Desconectando VPN')
+        sleep(velocidade_bot)
 
         # Clicar em Localização Ideal
         mensagem_normal('> Escolhendo um país aleatório.')
@@ -59,6 +63,7 @@ def avg_vpn_conect(device):
             device(resourceId='com.avg.android.vpn:id/location_arrow').click()
         else:
             return False
+        sleep(velocidade_bot)
 
         mensagem_normal('> País escolhido: ' + pais_escolhido)
         # Verificando se existe o pais para clicar
@@ -71,18 +76,21 @@ def avg_vpn_conect(device):
                 break
 
             # Se não existe, faz um swipe
-            device.swipe(0.472, 0.907, 0.514, 0.431, 0.05)
+            device.swipe(0.472, 0.907, 0.514, 0.431, 0.1)
 
             sleep(1)
+        sleep(velocidade_bot)
 
         # Se aparecer ativar a conexão automatica
         if device(text='ATIVAR A CONEXÃO AUTOMÁTICA').exists(timeout=5):
             sleep(1)
             device.press('back')
+        sleep(velocidade_bot)
 
         # Se aparecer isso, a vpn foi conectada com sucesso
         if device(resourceId='com.avg.android.vpn:id/avg_headline').exists(timeout=5):
             mensagem_normal('> AVG VPN conectada!')
+            sleep(velocidade_bot)
             return True
 
     except:

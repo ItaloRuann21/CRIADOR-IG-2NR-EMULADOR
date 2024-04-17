@@ -1,3 +1,4 @@
+
 from random import randint
 from time import sleep
 
@@ -5,19 +6,21 @@ from colorama import Back, Fore, Style, init
 
 from _2nr.pegar_codigo import pegar_codigo
 from contas import contas_criadas, nao_criou
-from Images.ManipularImagens import Imagem
+from instagram.reinviar_codigo import reinviar_codigo
 from mensagens.mensagens import (mensagem_atencao, mensagem_erro,
                                  mensagem_normal, mensagem_sucesso)
+from vpn.trocar_ip import trocar_ip
 
 # Iniciando contador
 contador_contas = 0
 
 
-def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
+def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velocidade_bot):
     try:
 
         global contador_contas
 
+        sleep(velocidade_bot)
         # Clicar em Adicionar numero 2nr
         mensagem_normal('> Adicionando número 2nr')
         resposta = device(description='Número do celular').exists(timeout=30)
@@ -27,6 +30,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
             mensagem_erro(
                 '> Não foi possível identificar o elemento de número 2nr. Pagina indisponível.')
             return False
+        sleep(velocidade_bot)
 
         # Preecnher numero
         resposta = device(focused=True).exists(timeout=30)
@@ -36,6 +40,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
         else:
             mensagem_erro('> Não foi possivel preencher número.')
             return False
+        sleep(velocidade_bot)
 
         # Clicar em Avançar
         def avançar():
@@ -46,29 +51,41 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
                 mensagem_erro('> Não clicou em avançar.')
                 return False
         avançar()
+        sleep(velocidade_bot)
 
         # Você está tentando entrar?
         resposta = device(text='Criar nova conta').exists(timeout=30)
         if resposta:
             mensagem_normal('> Clicando em Criar nova conta.')
             device(text='Criar nova conta').click()
+        sleep(velocidade_bot)
 
         # Se aparecer Ocorreu um erro. Tente novamente mais tarde.
         if device(text='Ocorreu um erro. Tente novamente mais tarde.').exists(timeout=7):
             mensagem_atencao(
-                '> Erro no número. Trocando IP.')
-            return False
+                '> Erro no número. Trocando IP e limpando dados do clonador.')
+            device.app_clear('com.excelliance.multiaccounts')
+            return 4
+        sleep(velocidade_bot)
 
         mensagem_normal('> Código enviado, esperando.')
         # Instanciando função para pegar codigo
         codigo = False
-        codigo = pegar_codigo(device)
+        codigo = pegar_codigo(device, velocidade_bot=velocidade_bot)
         if codigo:
             mensagem_normal('> Código chegou: ' + str(codigo))
         if not codigo:
-            mensagem_erro('> Código não chegou no 2nr.')
-            return 1
+            mensagem_erro(
+                '> Código não chegou no 2nr. Trocando IP e reinviando o código.')
+            trocar_ip(device, vpns, velocidade_bot=velocidade_bot)
+            reinviar_codigo(device, velocidade_bot)
+            codigo = pegar_codigo(device, velocidade_bot=velocidade_bot)
+            if codigo:
+                mensagem_normal('> Código chegou: ' + str(codigo))
+            if not codigo:
+                return 1
 
+        sleep(velocidade_bot)
         # Caso apareça o codigo de confirmação, digita o codigo
         resposta = device(text='Código de confirmação').exists(timeout=30)
         if resposta:
@@ -78,8 +95,12 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
             mensagem_erro('> Não foi possível adicionar o código.')
             return False
 
+        sleep(velocidade_bot)
+
         # Clicar em Avançar
         avançar()
+
+        sleep(velocidade_bot)
 
         # Colocando a senha
         resposta = device(focused=True).exists(timeout=30)
@@ -89,20 +110,25 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
         else:
             mensagem_erro('> Não foi possível adicionar senha')
             return False
+        sleep(velocidade_bot)
 
         # Clicar em Avançar
         avançar()
+
+        sleep(velocidade_bot)
 
         # Verificando se existe uma conta com esse número.
         resposta = device(text='CRIAR NOVA CONTA').exists(timeout=7)
         if resposta:
             device(text='CRIAR NOVA CONTA').click()
+        sleep(velocidade_bot)
 
         # Salvar suas informações de login?
         resposta = device(
             text='Salvar suas informações de login?').exists(timeout=30)
         if resposta:
             device(text='Agora não').click()
+        sleep(velocidade_bot)
 
         # Clicar em DEFINIR
         resposta = device(text='DEFINIR').exists(timeout=30)
@@ -111,9 +137,12 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
         else:
             mensagem_erro('> Erro ao clicar em DEFINIR')
             return False
+        sleep(velocidade_bot)
 
         # Clicar em avançar
         avançar()
+
+        sleep(velocidade_bot)
 
         # Se aparecer o erro
         resposta = device(
@@ -123,6 +152,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
         else:
             mensagem_erro('> Erro ao clicar em avançar')
             return False
+        sleep(velocidade_bot)
 
         # Definindo o ano
         mensagem_normal('> Definindo idade')
@@ -135,8 +165,12 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
             mensagem_erro('> Não adicionou a idade no input.')
             return False
 
+        sleep(velocidade_bot)
+
         # Clicando em avançar
         avançar()
+
+        sleep(velocidade_bot)
 
         # Se aparecer essa msg
         resposta = device(text='OK').exists(timeout=30)
@@ -145,6 +179,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
         else:
             mensagem_erro('> Não clicou em OK')
             return False
+        sleep(velocidade_bot)
 
         # Definindo o nome completo
         mensagem_normal('> Digitando o nome completo.')
@@ -156,24 +191,31 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario):
             mensagem_erro(
                 '> Não foi possível adicionar o nome completo no input')
             return False
+        sleep(velocidade_bot)
 
         # Clicar em avançar
         avançar()
+
+        sleep(velocidade_bot)
 
         # Caso o usuário ja exista...
         seletor = f'O nome de usuário {usuario} não está disponível.'
         if device(text=seletor).exists(5):
             device(className='android.view.ViewGroup')[0].click()
             mensagem_atencao('> Número de usuário já existe! Tentando outro.')
+            sleep(velocidade_bot)
 
         else:
             # Escolher nome de usuario
             device(className='android.widget.EditText').wait(10)
             usuario = device(className='android.widget.EditText').get_text()
             mensagem_normal('> Nome de usuário definido: ' + usuario)
+            sleep(velocidade_bot)
 
         # Clicando em avançar
         avançar()
+
+        sleep(velocidade_bot)
 
         # Confirmar termos de uso
         mensagem_normal('> Concordando com os termos de uso.')

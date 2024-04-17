@@ -30,4 +30,8 @@ def configuracao():
     quantidade_contas_por_numero = input('> ')
     print('')
 
-    return porta, definir_vpn, quantidade_contas_por_numero
+    mensagem_atencao('Defina em segundos a velocidade do bot:')
+    velocidade_bot = int(input('> '))
+    print('')
+
+    return porta, definir_vpn, quantidade_contas_por_numero, velocidade_bot

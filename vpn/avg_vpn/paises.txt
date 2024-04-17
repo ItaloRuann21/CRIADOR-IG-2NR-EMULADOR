@@ -15,3 +15,4 @@ EUA, Seattle
 EUA, São Francisco
 EUA, Washington DC
 Brasil, São Paulo
+Polônia, Varsóvia

@@ -5,7 +5,7 @@ from mensagens.mensagens import mensagem_erro, mensagem_normal
 from .permissoes_2nr import aceitando_permissoes_2nr
 
 
-def acessar_conta_2nr(device):
+def acessar_conta_2nr(device, velocidade_bot):
     try:
 
         mensagem_normal('> Limpando dados do 2NR')
@@ -14,15 +14,18 @@ def acessar_conta_2nr(device):
         try:
             device.app_clear('pl.rs.sip.softphone.newapp')
             mensagem_normal('> Dados limpos com sucesso!')
+            sleep(velocidade_bot)
         except:
             mensagem_erro('> Não foi possível limpar dados do 2NR')
 
         # Aceitando permissões 2nr
         mensagem_normal('> Permissões do 2nr aceitas com sucesso!')
         aceitando_permissoes_2nr(device)
+        sleep(velocidade_bot)
 
         # Abrir 2nr
         device.app_start('pl.rs.sip.softphone.newapp', use_monkey=True)
+        sleep(velocidade_bot)
 
         # Clicando em Login
         mensagem_normal('> Fazendo login no 2nr')
@@ -31,7 +34,7 @@ def acessar_conta_2nr(device):
         else:
             mensagem_erro('> Erro ao clicar em LOGIN.')
             return False
-        sleep(1)
+        sleep(velocidade_bot)
 
         # Clicar em Google
         if device(text='Google').exists(timeout=30):
@@ -39,6 +42,7 @@ def acessar_conta_2nr(device):
         else:
             mensagem_erro('> Erro ao clicar em Google.')
             return False
+        sleep(velocidade_bot)
 
         # Escolher a primeira conta
         if device(resourceId='com.google.android.gms:id/account_name').wait(30):
@@ -46,6 +50,7 @@ def acessar_conta_2nr(device):
         else:
             mensagem_erro('> Erro ao clicar na primeira conta do google.')
             return False
+        sleep(velocidade_bot)
 
         # Clicando em configurações
         mensagem_normal('> Deletando conta 2nr.')
@@ -54,6 +59,7 @@ def acessar_conta_2nr(device):
         else:
             mensagem_erro('> Não foi possível clicar em configurações.')
             return False
+        sleep(velocidade_bot)
 
         # Deletar conta
         if device(text='Delete account').exists(timeout=30):
@@ -63,6 +69,7 @@ def acessar_conta_2nr(device):
         else:
             mensagem_erro('> Erro ao tentar deletar a conta.')
             return False
+        sleep(velocidade_bot)
 
         mensagem_normal('> Conta deletada com sucesso.')
         mensagem_normal('> Entrando novamente no 2nr.')
@@ -73,7 +80,7 @@ def acessar_conta_2nr(device):
         else:
             mensagem_erro('> Erro ao clicar em LOGIN')
             return False
-        sleep(1)
+        sleep(velocidade_bot)
 
         # Clicar em Google
         if device(text='Google').exists(timeout=30):
@@ -81,6 +88,7 @@ def acessar_conta_2nr(device):
         else:
             mensagem_erro('> Erro ao clicar em Google.')
             return False
+        sleep(velocidade_bot)
 
         # Escolher a primeira conta
         if device(resourceId='com.google.android.gms:id/account_name').wait(30):
@@ -88,6 +96,7 @@ def acessar_conta_2nr(device):
         else:
             mensagem_erro('> Erro ao clicar na primeira conta do google.')
             return False
+        sleep(velocidade_bot)
 
         return True
     except Exception as erro:

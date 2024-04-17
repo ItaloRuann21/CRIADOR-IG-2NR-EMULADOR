@@ -21,8 +21,3 @@ Seattle
 Los Angeles
 San Jose
 São Francisco
-Nova York #2
-Nova York #5
-Nova York #3
-Nova York #4
-Nova York #1
