@@ -66,19 +66,28 @@ def fast_vpn_freedom(device, velocidade_bot):
                 break
 
             # Se não existe, faz um swipe
-            device.swipe(0.472, 0.907, 0.514, 0.431, 0.04)
+            device.swipe(0.472, 0.907, 0.514, 0.431, 0.2)
 
             sleep(1)
         sleep(velocidade_bot)
 
-        # Verificar se conectou com sucesso
-        resposta = device(text='Conectado com sucesso').exists(timeout=10)
-        if resposta:
-            mensagem_normal('> VPN conectada.')
-            device.press('home')
-            sleep(velocidade_bot)
-            return True
+        # Se aparecer para solicitar a conexão, clica em OK
+        for x in range(10):
 
+            # Confirmar conexão
+            if device(text='Solicitação de conexão').exists:
+                device(text='OK').click()
+
+            # Verificar se conectou com sucesso
+            if device(text='Conectado com sucesso').exists:
+                mensagem_normal('> VPN conectada.')
+                device.press('home')
+                sleep(velocidade_bot)
+                break
+
+            sleep(1)
+
+        return True
     except Exception as erro:
         print(erro)
         return False

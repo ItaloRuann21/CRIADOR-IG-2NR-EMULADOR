@@ -76,22 +76,31 @@ def avg_vpn_conect(device, velocidade_bot):
                 break
 
             # Se não existe, faz um swipe
-            device.swipe(0.472, 0.907, 0.514, 0.431, 0.1)
+            device.swipe(0.472, 0.907, 0.514, 0.431, 0.2)
 
             sleep(1)
         sleep(velocidade_bot)
 
-        # Se aparecer ativar a conexão automatica
-        if device(text='ATIVAR A CONEXÃO AUTOMÁTICA').exists(timeout=5):
+        # Se aparecer para solicitar a conexão, clica em OK
+        for x in range(10):
+
+            # Confirmar conexão
+            if device(text='Solicitação de conexão').exists:
+                device(text='OK').click()
+
+            # Se aparecer ativar a conexão automatica
+            if device(text='ATIVAR A CONEXÃO AUTOMÁTICA').exists:
+                device.press('back')
+
+            # Verificar se conectou com sucesso
+            if device(text='Sua privacidade online').exists:
+                mensagem_normal('> VPN conectada.')
+                device.press('home')
+                sleep(velocidade_bot)
+                break
+
             sleep(1)
-            device.press('back')
-        sleep(velocidade_bot)
 
-        # Se aparecer isso, a vpn foi conectada com sucesso
-        if device(resourceId='com.avg.android.vpn:id/avg_headline').exists(timeout=5):
-            mensagem_normal('> AVG VPN conectada!')
-            sleep(velocidade_bot)
-            return True
-
+        return True
     except:
         return False

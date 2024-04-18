@@ -1,7 +1,7 @@
 
 from time import sleep
 
-from mensagens.mensagens import mensagem_atencao
+from mensagens.mensagens import mensagem_atencao, mensagem_normal
 from vpn.surfsharke.paises import pais_aleatorio
 
 
@@ -17,9 +17,22 @@ def conectar_surfshake(device, velocidade_bot):
         device.app_start('com.surfshark.vpnclient.android', use_monkey=True)
         sleep(velocidade_bot)
 
-        # Verificar se a vpn está conectada, Se tiver desconecta
-        if device(text='Desconectar').wait(5):
-            device(text='Desconectar').click()
+        for x in range(30):
+
+            # Verificar se a vpn está conectada, Se tiver desconecta
+            if device(text='Desconectar').exists:
+                device(text='Desconectar').click()
+
+            # Se aparecer os minutos, clica novamente em desconectar
+            if device(text='Experimente Pausar para um intervalo rápido').exists:
+                device(text='Desconectar').click()
+
+            # Se caso apareça conexão rápida, então não está conectado.
+            if device(text='Conexão rápida').exists:
+                break
+            sleep(1)
+        sleep(velocidade_bot)
+
         # Pesquisar o pais escolhido:
         if device(className="android.widget.EditText").wait(30):
             device(className="android.widget.EditText").click()
@@ -34,14 +47,31 @@ def conectar_surfshake(device, velocidade_bot):
             device(className='android.widget.TextView')[1].click()
             sleep(velocidade_bot)
 
-        # Se aparecer que conectou
-        if device(text='Pausar').wait(10):
-            device.press('home')
-            sleep(velocidade_bot)
-            return True
-        else:
-            return False
+         # Se aparecer para solicitar a conexão, clica em OK
+        for x in range(30):
 
+            # Confirmar conexão
+            if device(text='Solicitação de conexão').exists:
+                device(text='OK').click()
+
+            # Se aparecer mensagem de sobreposição de tela
+            if device(text='Desativar a otimização de bateria para a Surfshark').exists:
+                device(text='Desligar').click()
+
+            # Clica em permitir
+            if device(text='PERMITIR').exists:
+                device(text='PERMITIR').click()
+
+            # Verificar se conectou com sucesso
+            if device(text='Pausar').exists:
+                mensagem_normal('> VPN conectada.')
+                device.press('home')
+                sleep(velocidade_bot)
+                break
+
+            sleep(1)
+
+        return True
     except Exception as erro:
         print(erro)
         device
