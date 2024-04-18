@@ -54,7 +54,7 @@ while True:
     res = acessar_conta_2nr(device=device, velocidade_bot=velocidade_bot)
     if not res:
         while quantidade_tentativas < 4:
-            trocar_ip(device=device, vpns=vpns)
+            trocar_ip(device=device, vpns=vpns, velocidade_bot=velocidade_bot)
             res = acessar_conta_2nr(
                 device=device, velocidade_bot=velocidade_bot)
             if res:
@@ -64,7 +64,7 @@ while True:
     # Criando numero 2nr
     numero = criando_numero(device=device, velocidade_bot=velocidade_bot)
     if not numero:
-        trocar_ip(device=device, vpns=vpns)
+        trocar_ip(device=device, vpns=vpns, velocidade_bot=velocidade_bot)
         continue
 
     for x in range(int(quantidade_contas_por_numero)):
@@ -81,7 +81,8 @@ while True:
             device=device, velocidade_bot=velocidade_bot)
         if not res:
             while quantidade_tentativas < 4:
-                trocar_ip(device=device, vpns=vpns)
+                trocar_ip(device=device, vpns=vpns,
+                          velocidade_bot=velocidade_bot)
                 res = configurar_varias_contas(
                     device=device, velocidade_bot=velocidade_bot)
                 if res:

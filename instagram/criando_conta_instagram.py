@@ -6,7 +6,6 @@ from colorama import Back, Fore, Style, init
 
 from _2nr.pegar_codigo import pegar_codigo
 from contas import contas_criadas, nao_criou
-from instagram.reinviar_codigo import reinviar_codigo
 from mensagens.mensagens import (mensagem_atencao, mensagem_erro,
                                  mensagem_normal, mensagem_sucesso)
 from vpn.trocar_ip import trocar_ip
@@ -76,14 +75,8 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
             mensagem_normal('> Código chegou: ' + str(codigo))
         if not codigo:
             mensagem_erro(
-                '> Código não chegou no 2nr. Trocando IP e reinviando o código.')
-            trocar_ip(device, vpns, velocidade_bot=velocidade_bot)
-            reinviar_codigo(device, velocidade_bot)
-            codigo = pegar_codigo(device, velocidade_bot=velocidade_bot)
-            if codigo:
-                mensagem_normal('> Código chegou: ' + str(codigo))
-            if not codigo:
-                return 1
+                '> Código não chegou no 2nr. ')
+            return 1
 
         sleep(velocidade_bot)
         # Caso apareça o codigo de confirmação, digita o codigo

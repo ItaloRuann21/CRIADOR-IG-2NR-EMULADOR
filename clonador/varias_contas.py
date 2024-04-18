@@ -44,25 +44,16 @@ def configurar_varias_contas(device, velocidade_bot):
         device(text='OK').click()
         sleep(velocidade_bot)
 
+        # Se nao iniciar de primeira e aparecer aplicativo do instagram, clica.
         for x in range(30):
 
-            # Criar nova conta via texto
+            if device(text='Instagram').exists:
+                device(text='Instagram').click()
+
             if device(text='Criar nova conta').exists:
                 device(text='Criar nova conta').click()
-                mensagem_normal('> Instagram clonado!')
-                break
+                return True
 
-            # Criar nova conta via Description
-            if device(description='Criar nova conta').exists:
-                device(description='Criar nova conta').click()
-                mensagem_normal('> Instagram clonado!')
-                break
-
-            # Criar nova conta por classe
-            if device(className='android.widget.Button')[2].exists:
-                device(className='android.widget.Button')[2].click()
-                mensagem_normal('> Instagram clonado!')
-                break
             sleep(1)
 
         else:
@@ -76,38 +67,24 @@ def configurar_varias_contas(device, velocidade_bot):
             sleep(velocidade_bot)
 
             # Se nao iniciar de primeira e aparecer aplicativo do instagram, clica.
-            for x in range(4):
+            for x in range(30):
 
                 if device(text='Instagram').exists:
                     device(text='Instagram').click()
-                    sleep(velocidade_bot)
 
-                sleep(0.5)
-
-            if device(text='Instagram').exists(timeout=30):
-                device(text='Instagram').click()
-                sleep(velocidade_bot)
-
-            for x in range(30):
-
-                # Criar nova conta via texto
                 if device(text='Criar nova conta').exists:
                     device(text='Criar nova conta').click()
-                    mensagem_normal('> Instagram clonado!')
-                    break
+                    return True
 
-                # Criar nova conta via Description
-                if device(description='Criar nova conta').exists:
-                    device(description='Criar nova conta').click()
-                    mensagem_normal('> Instagram clonado!')
-                    break
-
-                # Criar nova conta por classe
-                if device(className='android.widget.Button')[2].exists:
-                    device(className='android.widget.Button')[2].click()
-                    mensagem_normal('> Instagram clonado!')
-                    break
                 sleep(1)
+
+            # sleep(velocidade_bot)
+
+            # # Criar nova conta via texto
+            # if device(text='Criar nova conta').exists(timeout=30):
+            #     device(text='Criar nova conta').click()
+            #     mensagem_normal('> Instagram clonado!')
+            #     return True
 
         return True
     except Exception as erro:
