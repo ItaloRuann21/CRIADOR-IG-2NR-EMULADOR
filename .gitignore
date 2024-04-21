@@ -5,3 +5,5 @@ main.spec
 dist
 contas_criadas.txt
 nao_criou.txt
+tuamae_email.py
+fakemail_net.py

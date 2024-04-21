@@ -3,13 +3,16 @@ from time import sleep
 
 def pegar_codigo(device, velocidade_bot):
     try:
+        # Parar 2nr
+        device.app_stop('pl.rs.sip.softphone.newapp')
+
         # Abrir 2nr
         device.app_start('pl.rs.sip.softphone.newapp', use_monkey=True)
         sleep(velocidade_bot)
 
         # Clicando na mensagem
         seletor = '//*[@resource-id="pl.rs.sip.softphone.newapp:id/messages"]/android.widget.FrameLayout[1]'
-        if device.xpath(seletor).wait(60):
+        if device.xpath(seletor).wait(30):
             device.xpath(seletor).click()
             sleep(velocidade_bot)
 
@@ -45,22 +48,6 @@ def pegar_codigo(device, velocidade_bot):
                 device(description='Várias contas (Várias contas)').click()
 
                 return codigo
-        else:
 
-            # Se não foi possível encontrar o código, lidar com essa situação
-            # Forçar parada do 2nr
-            device.app_stop('pl.rs.sip.softphone.newapp')
-            sleep(velocidade_bot)
-
-            # Abrir 2nr
-            device.app_start('pl.rs.sip.softphone.newapp', use_monkey=True)
-            sleep(velocidade_bot)
-
-            # Clicar em mensagens
-            device(resourceId='pl.rs.sip.softphone.newapp:id/messages').wait(30)
-            device(resourceId='pl.rs.sip.softphone.newapp:id/messages').click()
-            sleep(velocidade_bot)
-
-        return False
     except:
         return False

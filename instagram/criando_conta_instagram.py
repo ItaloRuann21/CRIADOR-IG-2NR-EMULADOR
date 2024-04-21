@@ -6,8 +6,9 @@ from colorama import Back, Fore, Style, init
 
 from _2nr.pegar_codigo import pegar_codigo
 from contas import contas_criadas, nao_criou
-from mensagens.mensagens import (mensagem_atencao, mensagem_erro,
-                                 mensagem_normal, mensagem_sucesso)
+from mensagens.mensagens import (mensagem_atencao, mensagem_desativada,
+                                 mensagem_erro, mensagem_normal,
+                                 mensagem_sucesso)
 from vpn.trocar_ip import trocar_ip
 
 # Iniciando contador
@@ -35,6 +36,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
         resposta = device(focused=True).exists(timeout=30)
         if resposta:
             device(focused=True).set_text(numero)
+
             mensagem_normal('< Número preenchido.')
         else:
             mensagem_erro('> Não foi possivel preencher número.')
@@ -52,11 +54,22 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
         avançar()
         sleep(velocidade_bot)
 
-        # Você está tentando entrar?
-        resposta = device(text='Criar nova conta').exists(timeout=30)
-        if resposta:
-            mensagem_normal('> Clicando em Criar nova conta.')
-            device(text='Criar nova conta').click()
+        for x in range(30):
+
+            # Verificar se existe Confirmar por ligação telefônica
+            if device(text='Confirmar por ligação telefônica').exists:
+                device(text='Enviar código por SMS').click()
+                avançar()
+                break
+
+            # Se aparecer "Você está tentando entrar?"
+            if device(text='Criar nova conta').exists:
+                mensagem_normal('> Clicando em Criar nova conta.')
+                device(text='Criar nova conta').click()
+                break
+
+            sleep(1)
+
         sleep(velocidade_bot)
 
         # Se aparecer Ocorreu um erro. Tente novamente mais tarde.
@@ -67,16 +80,27 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
             return 4
         sleep(velocidade_bot)
 
-        mensagem_normal('> Código enviado, esperando.')
-        # Instanciando função para pegar codigo
-        codigo = False
-        codigo = pegar_codigo(device, velocidade_bot=velocidade_bot)
-        if codigo:
-            mensagem_normal('> Código chegou: ' + str(codigo))
-        if not codigo:
+        # Verificando campo de código de confirmação
+        if device(text='Insira o código de confirmação').exists(timeout=30):
+            mensagem_normal('> Código enviado, aguardando.')
+            tentativas = 0
+            codigo = False
+
+            while tentativas < 2:
+                codigo = pegar_codigo(device, velocidade_bot=velocidade_bot)
+                if codigo:
+                    mensagem_normal('> Código chegou: ' + str(codigo))
+                    break
+                else:
+                    tentativas += 1
+
+            if not codigo and tentativas == 2:
+                mensagem_erro('> Código do 2nr não chegou após 2 tentativas')
+                return 1
+        else:
             mensagem_erro(
-                '> Código não chegou no 2nr. ')
-            return 1
+                '> O campo do código de confirmação não apareceu na tela. Possível bloqueio de IP.')
+            return False
 
         sleep(velocidade_bot)
         # Caso apareça o codigo de confirmação, digita o codigo
@@ -222,7 +246,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
                 device(text='Concordo').click()
 
             if device(text='Fazer uma apelação').exists:
-                mensagem_erro('> NÃO CRIOU. CONTA SUSPENSA!')
+                mensagem_desativada('> CONTA SOFREU SMS!')
                 device.app_clear('com.excelliance.multiaccounts')
                 criou = False
                 return 2
@@ -260,7 +284,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
             sleep(1)
 
         if not criou:
-            mensagem_erro(
+            mensagem_desativada(
                 '> Conta não foi criada! Verifique manualmente depois.')
             nao_criou(usuario, senha)
             return False

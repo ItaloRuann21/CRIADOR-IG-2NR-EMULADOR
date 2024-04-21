@@ -57,13 +57,17 @@ def criando_numero(device, velocidade_bot):
         # Se aparecer a mensagem de verificação com sucesso, então criou o número!
         seletor = 'Successful verification'
         contador = 0
-        while contador < 30:
+        while contador < 3:
             if device(text=seletor).exists(10):
                 device(resourceId='pl.rs.sip.softphone.newapp:id/save').click()
                 break
             else:
                 device.swipe(0.498, 0.308, 0.508, 0.891)
                 contador += 1
+        if contador == 3:
+            mensagem_erro(
+                '> Não foi possível criar número. Veryfication Failed')
+            return False
         sleep(velocidade_bot)
 
         # Se aparecer esse seletor, numero foi criado!

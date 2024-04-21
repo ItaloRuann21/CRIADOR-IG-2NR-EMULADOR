@@ -29,5 +29,9 @@ def mensagem_erro(mensagem):
     print(Fore.RED + mensagem + Style.RESET_ALL)
 
 
+def mensagem_desativada(mensagem):
+    print(Fore.MAGENTA + mensagem + Style.RESET_ALL)
+
+
 def mensagem_atencao(mensagem):
     print(Fore.YELLOW + mensagem + Style.RESET_ALL)
