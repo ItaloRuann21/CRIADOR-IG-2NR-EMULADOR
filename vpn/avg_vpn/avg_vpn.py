@@ -37,7 +37,7 @@ def avg_vpn_conect(device, velocidade_bot):
 
         # Entrar avg
         sleep(velocidade_bot)
-        mensagem_atencao('> Iniciando a AVG VPN')
+        mensagem_atencao(' Iniciando a AVG VPN')
         device.app_start('com.avg.android.vpn', use_monkey=True)
         sleep(velocidade_bot)
 
@@ -52,11 +52,11 @@ def avg_vpn_conect(device, velocidade_bot):
             resourceId='com.avg.android.vpn:id/on').exists(timeout=5)
         if resposta:
             device(resourceId='com.avg.android.vpn:id/on').click()
-            mensagem_normal('> Desconectando VPN')
+            mensagem_normal(' Desconectando VPN')
         sleep(velocidade_bot)
 
         # Clicar em Localização Ideal
-        mensagem_normal('> Escolhendo um país aleatório.')
+        mensagem_normal(' Escolhendo um país aleatório.')
         resposta = device(
             resourceId='com.avg.android.vpn:id/location_arrow').exists(timeout=10)
         if resposta:
@@ -65,7 +65,7 @@ def avg_vpn_conect(device, velocidade_bot):
             return False
         sleep(velocidade_bot)
 
-        mensagem_normal('> País escolhido: ' + pais_escolhido)
+        mensagem_normal(' País escolhido: ' + pais_escolhido)
         # Verificando se existe o pais para clicar
         for x in range(60):
 
@@ -94,7 +94,7 @@ def avg_vpn_conect(device, velocidade_bot):
 
             # Verificar se conectou com sucesso
             if device(text='Sua privacidade online').exists:
-                mensagem_normal('> VPN conectada.')
+                mensagem_normal(' VPN conectada.')
                 device.press('home')
                 sleep(velocidade_bot)
                 break

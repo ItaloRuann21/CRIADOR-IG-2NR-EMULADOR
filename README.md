@@ -1,6 +1,6 @@
-<h1 align="center">Criador de contas Instagram</h1>
+<h1 align="center"Criador de contas Instagram</h1
 
-<p align="center">Um método eficaz para criar contas no Instagram</p>
+<p align="center"Um método eficaz para criar contas no Instagram</p
 
 ## Método:
 

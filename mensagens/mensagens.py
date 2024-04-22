@@ -3,35 +3,28 @@ from time import sleep
 
 from colorama import Back, Fore, Style, init
 
+from tempo_terminal.tempo import tempo_execucao
+
 # Inicializa o colorama
+tempo = tempo_execucao(Fore.CYAN + 'Creator IG v6.3' + Style.RESET_ALL)
 init()
 
 
 def mensagem_normal(mensagem):
-    print(mensagem)
+    print(next(tempo) + mensagem)
 
 
 def mensagem_sucesso(mensagem):
-    print(Fore.GREEN + mensagem + Style.RESET_ALL)
-
-
-def mensagem_carregamento(mensagem, duracao=1):
-    carregamento = ['|', '/', '-', '\\']
-    mensagem_sem_carregamento = f'{mensagem} '
-    for _ in range(duracao * 10):
-        for char in carregamento:
-            sys.stdout.write('\r' + mensagem_sem_carregamento + char)
-            sys.stdout.flush()
-            sleep(0.1)
+    print(next(tempo) + Fore.GREEN + mensagem + Style.RESET_ALL)
 
 
 def mensagem_erro(mensagem):
-    print(Fore.RED + mensagem + Style.RESET_ALL)
+    print(next(tempo) + Fore.RED + mensagem + Style.RESET_ALL)
 
 
 def mensagem_desativada(mensagem):
-    print(Fore.MAGENTA + mensagem + Style.RESET_ALL)
+    print(next(tempo) + Fore.MAGENTA + mensagem + Style.RESET_ALL)
 
 
 def mensagem_atencao(mensagem):
-    print(Fore.YELLOW + mensagem + Style.RESET_ALL)
+    print(next(tempo) + Fore.YELLOW + mensagem + Style.RESET_ALL)

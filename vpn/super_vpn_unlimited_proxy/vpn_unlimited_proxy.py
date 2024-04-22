@@ -1,7 +1,6 @@
 from random import choice
 from time import sleep
 
-from Images.ManipularImagens import Imagem
 from mensagens.mensagens import mensagem_normal
 
 
@@ -20,12 +19,12 @@ def paises_vpn_unlimited():
 def vpn_unlimited_proxy(device, velocidade_bot):
     try:
         # Limpar dados
-        mensagem_normal('> Limpando dados da Super VPN Unlimited Proxy')
+        mensagem_normal(' Limpando dados da Super VPN Unlimited Proxy')
         device.app_clear('com.free.vpn.super.hotspot.open')
         sleep(velocidade_bot)
 
         # Abrir VPN
-        mensagem_normal('> Iniciando a Super VPN Unlimited Proxy')
+        mensagem_normal(' Iniciando a Super VPN Unlimited Proxy')
         device.app_start('com.free.vpn.super.hotspot.open', use_monkey=True)
         sleep(velocidade_bot)
 
@@ -52,7 +51,7 @@ def vpn_unlimited_proxy(device, velocidade_bot):
         sleep(velocidade_bot)
 
         # Se aparecer anuncio na vpn (para uso em vps)
-        mensagem_normal('> Escolhendo um país aleatório.')
+        mensagem_normal(' Escolhendo um país aleatório.')
         for x in range(30):
 
             # Se aparecer o anuncio, clica
@@ -81,7 +80,7 @@ def vpn_unlimited_proxy(device, velocidade_bot):
 
         # Escolher um servidor aleatório
         pais = paises_vpn_unlimited()
-        mensagem_normal('> País escolhido: ' + pais)
+        mensagem_normal(' País escolhido: ' + pais)
 
         # Verificando se existe o pais para clicar
         for x in range(30):
@@ -107,7 +106,7 @@ def vpn_unlimited_proxy(device, velocidade_bot):
 
             # Verificar se conectou com sucesso
             if device(text='Conectado com sucesso').exists:
-                mensagem_normal('> VPN conectada.')
+                mensagem_normal(' VPN conectada.')
                 device.press('home')
                 sleep(velocidade_bot)
                 break

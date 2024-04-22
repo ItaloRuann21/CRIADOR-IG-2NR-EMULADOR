@@ -8,11 +8,11 @@ from .paises_fast_vpn_freedom import paises_fast_vpn
 
 def fast_vpn_freedom(device, velocidade_bot):
     try:
-        mensagem_atencao('> Iniciando a Fast Vpn Freedom.')
+        mensagem_atencao(' Iniciando a Fast Vpn Freedom.')
 
         # limpar dados fast
         sleep(velocidade_bot)
-        mensagem_normal('> Limpando dados da Fast VPN')
+        mensagem_normal(' Limpando dados da Fast VPN')
         device.app_clear('easyvpn.free.vpn.unblock.proxy')
         sleep(velocidade_bot)
 
@@ -25,11 +25,11 @@ def fast_vpn_freedom(device, velocidade_bot):
         if resposta:
             device(text='ACCEPT AND CONTINUE').click()
         else:
-            mensagem_erro('> Não clicou em ACCEPT AND CONTINUE')
+            mensagem_erro(' Não clicou em ACCEPT AND CONTINUE')
             return False
         sleep(velocidade_bot)
 
-        mensagem_normal('> Escolhendo um país aleatório.')
+        mensagem_normal(' Escolhendo um país aleatório.')
         # clicar em Localização mais rápida
         for x in range(30):
 
@@ -54,7 +54,7 @@ def fast_vpn_freedom(device, velocidade_bot):
 
         # Escolher um servidor aleatório
         pais = paises_fast_vpn()
-        mensagem_normal('> País escolhido: ' + pais)
+        mensagem_normal(' País escolhido: ' + pais)
 
         # Verificando se existe o pais para clicar
         for x in range(60):
@@ -80,7 +80,7 @@ def fast_vpn_freedom(device, velocidade_bot):
 
             # Verificar se conectou com sucesso
             if device(text='Conectado com sucesso').exists:
-                mensagem_normal('> VPN conectada.')
+                mensagem_normal(' VPN conectada.')
                 device.press('home')
                 sleep(velocidade_bot)
                 break

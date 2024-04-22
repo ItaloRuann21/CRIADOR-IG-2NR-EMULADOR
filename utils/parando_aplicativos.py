@@ -4,7 +4,7 @@ from mensagens.mensagens import mensagem_normal
 def forçar_parada(device):
 
     # Surf
-    mensagem_normal('> Forçando parada dos aplicativos.')
+    mensagem_normal(' Forçando parada dos aplicativos.')
     device.app_stop('com.surfshark.vpnclient.android')
 
     # Fast Vpn Freedom

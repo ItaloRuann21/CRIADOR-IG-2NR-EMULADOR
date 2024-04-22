@@ -15,20 +15,20 @@ from vpn.trocar_ip import trocar_ip
 contador_contas = 0
 
 
-def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velocidade_bot):
+def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade_bot):
     try:
 
         global contador_contas
 
         sleep(velocidade_bot)
         # Clicar em Adicionar numero 2nr
-        mensagem_normal('> Adicionando número 2nr')
+        mensagem_normal(' Adicionando número 2nr')
         resposta = device(description='Número do celular').exists(timeout=30)
         if resposta:
             device(description='Número do celular').click()
         else:
             mensagem_erro(
-                '> Não foi possível identificar o elemento de número 2nr. Pagina indisponível.')
+                ' Não foi possível identificar o elemento de número 2nr. Pagina indisponível.')
             return False
         sleep(velocidade_bot)
 
@@ -37,9 +37,9 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
         if resposta:
             device(focused=True).set_text(numero)
 
-            mensagem_normal('< Número preenchido.')
+            mensagem_normal(' Número preenchido.')
         else:
-            mensagem_erro('> Não foi possivel preencher número.')
+            mensagem_erro(' Não foi possivel preencher número.')
             return False
         sleep(velocidade_bot)
 
@@ -49,57 +49,51 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
             if resposta:
                 device(text='Avançar').click()
             else:
-                mensagem_erro('> Não clicou em avançar.')
+                mensagem_erro(' Não clicou em avançar.')
                 return False
         avançar()
         sleep(velocidade_bot)
 
-        for x in range(30):
+        # Se aparecer "Você está tentando entrar?"
+        if device(text='Criar nova conta').exists(timeout=10):
+            mensagem_normal(' Clicando em Criar nova conta.')
+            device(text='Criar nova conta').click()
 
-            # Verificar se existe Confirmar por ligação telefônica
-            if device(text='Confirmar por ligação telefônica').exists:
-                device(text='Enviar código por SMS').click()
-                avançar()
-                break
-
-            # Se aparecer "Você está tentando entrar?"
-            if device(text='Criar nova conta').exists:
-                mensagem_normal('> Clicando em Criar nova conta.')
-                device(text='Criar nova conta').click()
-                break
-
-            sleep(1)
+        # Verificar se existe Confirmar por ligação telefônica
+        if device(text='Confirmar por ligação telefônica').exists(timeout=8):
+            device(text='Enviar código por SMS').click()
+            avançar()
 
         sleep(velocidade_bot)
 
         # Se aparecer Ocorreu um erro. Tente novamente mais tarde.
         if device(text='Ocorreu um erro. Tente novamente mais tarde.').exists(timeout=7):
             mensagem_atencao(
-                '> Erro no número. Trocando IP e limpando dados do clonador.')
+                ' Erro no número. Trocando IP e limpando dados do clonador.')
             device.app_clear('com.excelliance.multiaccounts')
             return 4
         sleep(velocidade_bot)
 
         # Verificando campo de código de confirmação
         if device(text='Insira o código de confirmação').exists(timeout=30):
-            mensagem_normal('> Código enviado, aguardando.')
+            mensagem_normal(' Código enviado, aguardando.')
             tentativas = 0
             codigo = False
 
             while tentativas < 2:
                 codigo = pegar_codigo(device, velocidade_bot=velocidade_bot)
                 if codigo:
-                    mensagem_normal('> Código chegou: ' + str(codigo))
+                    mensagem_normal(' Código chegou: ' + str(codigo))
                     break
                 else:
                     tentativas += 1
 
             if not codigo and tentativas == 2:
-                mensagem_erro('> Código do 2nr não chegou após 2 tentativas')
+                mensagem_erro(' Código do 2nr não chegou após 2 tentativas')
                 return 1
         else:
             mensagem_erro(
-                '> O campo do código de confirmação não apareceu na tela. Possível bloqueio de IP.')
+                ' O campo do código de confirmação não apareceu na tela. Possível bloqueio de IP.')
             return False
 
         sleep(velocidade_bot)
@@ -107,9 +101,9 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
         resposta = device(text='Código de confirmação').exists(timeout=30)
         if resposta:
             device(focused=True).set_text(codigo)
-            mensagem_normal('> Código adicionado no input')
+            mensagem_normal(' Código adicionado no input')
         else:
-            mensagem_erro('> Não foi possível adicionar o código.')
+            mensagem_erro(' Não foi possível adicionar o código.')
             return False
 
         sleep(velocidade_bot)
@@ -123,9 +117,9 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
         resposta = device(focused=True).exists(timeout=30)
         if resposta:
             device(focused=True).set_text(senha)
-            mensagem_normal('> Senha adicionada no campo do input.')
+            mensagem_normal(' Senha adicionada no campo do input.')
         else:
-            mensagem_erro('> Não foi possível adicionar senha')
+            mensagem_erro(' Não foi possível adicionar senha')
             return False
         sleep(velocidade_bot)
 
@@ -152,7 +146,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
         if resposta:
             device(text='DEFINIR').click()
         else:
-            mensagem_erro('> Erro ao clicar em DEFINIR')
+            mensagem_erro(' Erro ao clicar em DEFINIR')
             return False
         sleep(velocidade_bot)
 
@@ -167,19 +161,19 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
         if resposta:
             device(text='Avançar').click()
         else:
-            mensagem_erro('> Erro ao clicar em avançar')
+            mensagem_erro(' Erro ao clicar em avançar')
             return False
         sleep(velocidade_bot)
 
         # Definindo o ano
-        mensagem_normal('> Definindo idade')
+        mensagem_normal(' Definindo idade')
         ano = randint(18, 60)
         resposta = device(
             className='android.widget.EditText').exists(timeout=30)
         if resposta:
             device(className='android.widget.EditText').set_text(str(ano))
         else:
-            mensagem_erro('> Não adicionou a idade no input.')
+            mensagem_erro(' Não adicionou a idade no input.')
             return False
 
         sleep(velocidade_bot)
@@ -194,19 +188,19 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
         if resposta:
             device(text='OK').click()
         else:
-            mensagem_erro('> Não clicou em OK')
+            mensagem_erro(' Não clicou em OK')
             return False
         sleep(velocidade_bot)
 
         # Definindo o nome completo
-        mensagem_normal('> Digitando o nome completo.')
+        mensagem_normal(' Digitando o nome completo.')
         resposta = device(focused=True).exists(timeout=30)
         if resposta:
             device(focused=True).set_text(nome)
-            mensagem_normal('> Nome completo: ' + nome)
+            mensagem_normal(' Nome completo: ' + nome)
         else:
             mensagem_erro(
-                '> Não foi possível adicionar o nome completo no input')
+                ' Não foi possível adicionar o nome completo no input')
             return False
         sleep(velocidade_bot)
 
@@ -215,19 +209,28 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
 
         sleep(velocidade_bot)
 
-        # Caso o usuário ja exista...
-        seletor = f'O nome de usuário {usuario} não está disponível.'
-        if device(text=seletor).exists(5):
-            device(className='android.view.ViewGroup')[0].click()
-            mensagem_atencao('> Número de usuário já existe! Tentando outro.')
+        # Definindo um nome de usuario
+        resposta = device(text='Crie um nome de usuário').exists(timeout=30)
+        if resposta:
+            device(className='android.widget.EditText').click()
             sleep(velocidade_bot)
-
-        else:
-            # Escolher nome de usuario
-            device(className='android.widget.EditText').wait(10)
+            device(className='android.widget.EditText').clear_text()
+            device(className='android.widget.EditText').set_text(usuario)
             usuario = device(className='android.widget.EditText').get_text()
-            mensagem_normal('> Nome de usuário definido: ' + usuario)
-            sleep(velocidade_bot)
+            mensagem_normal(' Nome de usuário definido: ' + usuario)
+        else:
+            mensagem_erro(' Não foi localizado o seletor do Nome de usuário.')
+            return False
+
+        sleep(velocidade_bot)
+
+        # Verificar se o nome de usuario existe
+        if device(text=f'O nome de usuário {usuario} não está disponível.').exists(timeout=4):
+            device(className='android.widget.EditText').clear_text()
+            device(className='android.widget.EditText').set_text(
+                usuario + '_')
+
+            sleep(1)
 
         # Clicando em avançar
         avançar()
@@ -235,7 +238,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
         sleep(velocidade_bot)
 
         # Confirmar termos de uso
-        mensagem_normal('> Concordando com os termos de uso.')
+        mensagem_normal(' Concordando com os termos de uso.')
 
         # Se apareceu isso, a conta foi criada!
         criou = False
@@ -246,13 +249,13 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
                 device(text='Concordo').click()
 
             if device(text='Fazer uma apelação').exists:
-                mensagem_desativada('> CONTA SOFREU SMS!')
+                mensagem_desativada(' CONTA SOFREU SMS!')
                 device.app_clear('com.excelliance.multiaccounts')
                 criou = False
                 return 2
 
             if device(text='Adicione uma foto do perfil').exists:
-                mensagem_sucesso('> CONTA CRIADA COM SUCESSO!')
+                mensagem_sucesso(' CONTA CRIADA COM SUCESSO!')
                 contador_contas += 1
                 print(Fore.YELLOW + 'Quantidade criadas: ' + Style.RESET_ALL +
                       Fore.GREEN + str(contador_contas) + Style.RESET_ALL)
@@ -262,7 +265,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
                 return 3
 
             if device(text='Adicionar foto').exists:
-                mensagem_sucesso('> CONTA CRIADA COM SUCESSO!')
+                mensagem_sucesso(' CONTA CRIADA COM SUCESSO!')
                 contador_contas += 1
                 print(Fore.YELLOW + 'Quantidade criadas: ' + Style.RESET_ALL +
                       Fore.GREEN + str(contador_contas) + Style.RESET_ALL)
@@ -272,7 +275,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
                 return 3
 
             if device(text='Pular').exists:
-                mensagem_sucesso('> CONTA CRIADA COM SUCESSO!')
+                mensagem_sucesso(' CONTA CRIADA COM SUCESSO!')
                 contador_contas += 1
                 print(Fore.YELLOW + 'Quantidade criadas: ' + Style.RESET_ALL +
                       Fore.GREEN + str(contador_contas) + Style.RESET_ALL)
@@ -285,7 +288,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, vpns, velo
 
         if not criou:
             mensagem_desativada(
-                '> Conta não foi criada! Verifique manualmente depois.')
+                ' Conta não foi criada! Verifique manualmente depois.')
             nao_criou(usuario, senha)
             return False
 

@@ -9,7 +9,6 @@ vpns_usadas = []
 def trocar_ip(device, vpns, velocidade_bot):
     # Forçar parada dos aplicativos
     forçar_parada(device=device)
-    mensagem_normal('> Iniciando VPN aleatória.')
     vpn_escolhida = escolher_vpn(vpns_usadas, vpns)
     res = vpn_escolhida(device=device, velocidade_bot=velocidade_bot)
     if not res:

@@ -14,7 +14,7 @@ def criando_numero(device, velocidade_bot):
             if device(description=seletor).exists(timeout=30):
                 device(description=seletor).click()
         except Exception as erro:
-            mensagem_erro('> Erro no seletor de Criar número no 2nr')
+            mensagem_erro(' Erro no seletor de Criar número no 2nr')
             print(erro)
             return False
         sleep(velocidade_bot)
@@ -27,7 +27,7 @@ def criando_numero(device, velocidade_bot):
             device(className=seletor)[0].click()
             device(className=seletor).set_text(nome_numero)
         except Exception as erro:
-            mensagem_erro('> Erro ao gerar nome aleatório no número')
+            mensagem_erro(' Erro ao gerar nome aleatório no número')
             print(erro)
             return False
         sleep(velocidade_bot)
@@ -66,7 +66,7 @@ def criando_numero(device, velocidade_bot):
                 contador += 1
         if contador == 3:
             mensagem_erro(
-                '> Não foi possível criar número. Veryfication Failed')
+                ' Não foi possível criar número. Veryfication Failed')
             return False
         sleep(velocidade_bot)
 
@@ -79,12 +79,12 @@ def criando_numero(device, velocidade_bot):
             dividir_numeros = obter_texto_numero.split(' ')
             unir_numeros = ''.join(dividir_numeros)
             numero = '+48' + unir_numeros
-            mensagem_normal('> Número criado: ' + numero)
+            mensagem_normal(' Número criado: ' + numero)
             sleep(velocidade_bot)
 
             return numero
         else:
-            mensagem_erro('> Erro no 2nr.')
+            mensagem_erro(' Erro no 2nr.')
             return False
     except Exception as erro:
         print(erro)

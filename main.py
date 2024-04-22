@@ -8,8 +8,7 @@ from _2nr.criar_numero import criando_numero
 from clonador.varias_contas import configurar_varias_contas
 from configuracoes_usuario import configuracao
 from instagram.criando_conta_instagram import iniciando_criacao_instagram
-from mensagens.mensagens import (mensagem_atencao, mensagem_carregamento,
-                                 mensagem_normal)
+from mensagens.mensagens import mensagem_atencao, mensagem_normal
 from utils.gerar_dados_perfil import gerar_dados_perfil
 from utils.gerar_senha_perfil import gerar_senha_perfil
 from utils.parando_aplicativos import forçar_parada
@@ -22,13 +21,12 @@ from vpn.surfsharke.surfshake import conectar_surfshake
 from vpn.trocar_ip import trocar_ip
 
 # Configurações de usuário
-porta, definir_vpn, quantidade_contas_por_numero, velocidade_bot = configuracao()
+porta, definir_vpn, quantidade_contas_por_numero, velocidade_bot, genero = configuracao()
 
 device = u2.connect(f'127.0.0.1:{porta}')  # Conectar ao UiAutomator2
 
-mensagem_atencao('Iniciando automação...')
+mensagem_atencao(' Iniciando automação...')
 sleep(1)
-mensagem_carregamento('Carregando...')
 print('')
 
 if definir_vpn == '1':
@@ -73,7 +71,7 @@ while True:
         senha = gerar_senha_perfil()
 
         # nome
-        nome, usuario = gerar_dados_perfil()
+        nome, usuario = gerar_dados_perfil(genero=genero)
 
         # Configurando varias contas
         quantidade_tentativas = 0
@@ -91,7 +89,7 @@ while True:
 
         # Iniciando criação
         res = iniciando_criacao_instagram(
-            device=device, numero=numero, senha=senha, nome=nome, usuario=usuario, vpns=vpns, velocidade_bot=velocidade_bot)
+            device=device, numero=numero, senha=senha, nome=nome, usuario=usuario, velocidade_bot=velocidade_bot)
         if not res:
             trocar_ip(device=device, vpns=vpns, velocidade_bot=velocidade_bot)
             continue
@@ -112,7 +110,7 @@ while True:
             res1 = configurar_varias_contas(
                 device=device, velocidade_bot=velocidade_bot)
             res2 = iniciando_criacao_instagram(
-                device=device, numero=numero, senha=senha, nome=nome, usuario=usuario, vpns=vpns, velocidade_bot=velocidade_bot)
+                device=device, numero=numero, senha=senha, nome=nome, usuario=usuario, velocidade_bot=velocidade_bot)
             if not res1 or res2 == 4:
                 break
     else:

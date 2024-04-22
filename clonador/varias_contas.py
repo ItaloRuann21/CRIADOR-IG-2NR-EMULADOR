@@ -2,19 +2,18 @@ from time import sleep
 
 from clonador.permissoes_varias_contas import \
     aceitando_permissoes_varias_contas
-from Images.ManipularImagens import Imagem
 from mensagens.mensagens import mensagem_normal
 
 
 def configurar_varias_contas(device, velocidade_bot):
     try:
 
-        mensagem_normal('> Limpando dados do Clonador.')
+        mensagem_normal(' Limpando dados do Clonador.')
         # Limpar dados clonador varias contas
         device.app_clear('com.excelliance.multiaccounts')
         sleep(velocidade_bot)
 
-        mensagem_normal('> Permissões liberadas, iniciando clonador.')
+        mensagem_normal(' Permissões liberadas, iniciando clonador.')
         # Permitindo todas as permissoes do varias contas,
         aceitando_permissoes_varias_contas(device)
         sleep(velocidade_bot)
@@ -83,7 +82,7 @@ def configurar_varias_contas(device, velocidade_bot):
             # # Criar nova conta via texto
             # if device(text='Criar nova conta').exists(timeout=30):
             #     device(text='Criar nova conta').click()
-            #     mensagem_normal('> Instagram clonado!')
+            #     mensagem_normal(' Instagram clonado!')
             #     return True
 
         return True

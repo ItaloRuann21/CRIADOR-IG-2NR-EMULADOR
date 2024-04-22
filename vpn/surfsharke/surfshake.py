@@ -7,7 +7,7 @@ from vpn.surfsharke.paises import pais_aleatorio
 
 def conectar_surfshake(device, velocidade_bot):
     try:
-        mensagem_atencao('> Iniciando a SurfSharke VPN')
+        mensagem_atencao(' Iniciando a SurfSharke VPN')
         # Digitar um pais da america sul/norte aleatorio
         paises = pais_aleatorio()
 
@@ -64,7 +64,7 @@ def conectar_surfshake(device, velocidade_bot):
 
             # Verificar se conectou com sucesso
             if device(text='Pausar').exists:
-                mensagem_normal('> VPN conectada.')
+                mensagem_normal(' VPN conectada.')
                 device.press('home')
                 sleep(velocidade_bot)
                 break
