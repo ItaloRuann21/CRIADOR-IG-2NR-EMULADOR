@@ -23,13 +23,27 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         sleep(velocidade_bot)
         # Clicar em Adicionar numero 2nr
         mensagem_normal(' Adicionando número 2nr')
-        resposta = device(description='Número do celular').exists(timeout=30)
-        if resposta:
-            device(description='Número do celular').click()
-        else:
-            mensagem_erro(
-                ' Não foi possível identificar o elemento de número 2nr. Pagina indisponível.')
+        resposta = False
+        for x in range(30):
+            
+            if device(description='Número do celular').exists:
+                device(className='android.widget.EditText').click()
+                resposta = True
+                break
+
+            if device(description='Número de celular').exists:
+                device(className='android.widget.EditText').click()
+                resposta = True
+                break
+
+            if device(description='Número de celular ou email').exists:
+                device(className='android.widget.EditText').click()
+                resposta = True
+                break
+        if not resposta:
+            mensagem_erro(' Não foi possível identificar o elemento de número 2nr. Pagina indisponível.')
             return False
+        
         sleep(velocidade_bot)
 
         # Preecnher numero

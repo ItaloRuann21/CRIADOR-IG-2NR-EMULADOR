@@ -1,4 +1,5 @@
 
+import os
 from time import sleep
 
 import uiautomator2 as u2
@@ -20,98 +21,106 @@ from vpn.super_vpn_unlimited_proxy.vpn_unlimited_proxy import \
 from vpn.surfsharke.surfshake import conectar_surfshake
 from vpn.trocar_ip import trocar_ip
 
-# Configurações de usuário
-porta, definir_vpn, quantidade_contas_por_numero, velocidade_bot, genero = configuracao()
 
-device = u2.connect(f'127.0.0.1:{porta}')  # Conectar ao UiAutomator2
+def main():
+    # Configurações de usuário
+    porta, definir_vpn, quantidade_contas_por_numero, velocidade_bot, genero = configuracao()
 
-mensagem_atencao(' Iniciando automação...')
-sleep(1)
-print('')
+    os.system("adb devices")
 
-if definir_vpn == '1':
-    vpns = [conectar_surfshake]
-elif definir_vpn == '2':
-    vpns = [fast_vpn_freedom]
-elif definir_vpn == '3':
-    vpns = [vpn_unlimited_proxy]
-elif definir_vpn == '4':
-    vpns = [avg_vpn_conect]
-elif definir_vpn == '5':
-    vpns = [conectar_surfshake, fast_vpn_freedom,
-            vpn_unlimited_proxy, avg_vpn_conect]
+    device = u2.connect(f'127.0.0.1:{porta}')  # Conectar ao UiAutomator2
 
-# Função para conectar na VPN
-trocar_ip(device, vpns, velocidade_bot=velocidade_bot)
+    mensagem_atencao(' Iniciando automação...')
+    sleep(1)
+    print('')
 
+    if definir_vpn == '1':
+        vpns = [conectar_surfshake]
+    elif definir_vpn == '2':
+        vpns = [fast_vpn_freedom]
+    elif definir_vpn == '3':
+        vpns = [vpn_unlimited_proxy]
+    elif definir_vpn == '4':
+        vpns = [avg_vpn_conect]
+    elif definir_vpn == '5':
+        vpns = [conectar_surfshake, fast_vpn_freedom,
+                vpn_unlimited_proxy, avg_vpn_conect]
 
-while True:
+    # Função para conectar na VPN
+    trocar_ip(device, vpns, velocidade_bot=velocidade_bot)
 
-    # Apagando conta 2nr
-    quantidade_tentativas = 0
-    res = acessar_conta_2nr(device=device, velocidade_bot=velocidade_bot)
-    if not res:
-        while quantidade_tentativas < 4:
-            trocar_ip(device=device, vpns=vpns, velocidade_bot=velocidade_bot)
-            res = acessar_conta_2nr(
-                device=device, velocidade_bot=velocidade_bot)
-            if res:
-                break
-            quantidade_tentativas += 1
+    while True:
 
-    # Criando numero 2nr
-    numero = criando_numero(device=device, velocidade_bot=velocidade_bot)
-    if not numero:
-        trocar_ip(device=device, vpns=vpns, velocidade_bot=velocidade_bot)
-        continue
-
-    for x in range(int(quantidade_contas_por_numero)):
-
-        # Senha
-        senha = gerar_senha_perfil()
-
-        # nome
-        nome, usuario = gerar_dados_perfil(genero=genero)
-
-        # Configurando varias contas
+        # Apagando conta 2nr
         quantidade_tentativas = 0
-        res = configurar_varias_contas(
-            device=device, velocidade_bot=velocidade_bot)
+        res = acessar_conta_2nr(device=device, velocidade_bot=velocidade_bot)
         if not res:
             while quantidade_tentativas < 4:
                 trocar_ip(device=device, vpns=vpns,
                           velocidade_bot=velocidade_bot)
-                res = configurar_varias_contas(
+                res = acessar_conta_2nr(
                     device=device, velocidade_bot=velocidade_bot)
                 if res:
                     break
                 quantidade_tentativas += 1
 
-        # Iniciando criação
-        res = iniciando_criacao_instagram(
-            device=device, numero=numero, senha=senha, nome=nome, usuario=usuario, velocidade_bot=velocidade_bot)
-        if not res:
+        # Criando numero 2nr
+        numero = criando_numero(device=device, velocidade_bot=velocidade_bot)
+        if not numero:
             trocar_ip(device=device, vpns=vpns, velocidade_bot=velocidade_bot)
             continue
-        # Se o código não chegou, saia do loop for
-        if res == 1:
-            trocar_ip(device=device, vpns=vpns, velocidade_bot=velocidade_bot)
-            break
-        # Se a conta foi suspensa, troca vpn e continua
-        if res == 2:
-            trocar_ip(device=device, vpns=vpns, velocidade_bot=velocidade_bot)
-            continue
-        # Se criou, continua o lop
-        if res == 3:
-            continue
-        # Se deu erro no numero, troca o ip e limpa dados do clonador.
-        if res == 4:
-            trocar_ip(device=device, vpns=vpns, velocidade_bot=velocidade_bot)
-            res1 = configurar_varias_contas(
+
+        for x in range(int(quantidade_contas_por_numero)):
+
+            # Senha
+            senha = gerar_senha_perfil()
+
+            # nome
+            nome, usuario = gerar_dados_perfil(genero=genero)
+
+            # Configurando varias contas
+            quantidade_tentativas = 0
+            res = configurar_varias_contas(
                 device=device, velocidade_bot=velocidade_bot)
-            res2 = iniciando_criacao_instagram(
+            if not res:
+                while quantidade_tentativas < 4:
+                    trocar_ip(device=device, vpns=vpns,
+                              velocidade_bot=velocidade_bot)
+                    res = configurar_varias_contas(
+                        device=device, velocidade_bot=velocidade_bot)
+                    if res:
+                        break
+                    quantidade_tentativas += 1
+
+            # Iniciando criação
+            res = iniciando_criacao_instagram(
                 device=device, numero=numero, senha=senha, nome=nome, usuario=usuario, velocidade_bot=velocidade_bot)
-            if not res1 or res2 == 4:
+            if not res:
+                trocar_ip(device=device, vpns=vpns,
+                          velocidade_bot=velocidade_bot)
+                continue
+            # Se o código não chegou, saia do loop for
+            if res == 1:
+                trocar_ip(device=device, vpns=vpns,
+                          velocidade_bot=velocidade_bot)
                 break
-    else:
-        continue  # Continua o lop while
+            # Se a conta foi suspensa, troca vpn e continua
+            if res == 2:
+                trocar_ip(device=device, vpns=vpns,
+                          velocidade_bot=velocidade_bot)
+                continue
+            # Se criou, continua o lop
+            if res == 3:
+                continue
+            # Se deu erro no numero, troca o ip e limpa dados do clonador.
+            if res == 4:
+                trocar_ip(device=device, vpns=vpns,
+                          velocidade_bot=velocidade_bot)
+                res1 = configurar_varias_contas(
+                    device=device, velocidade_bot=velocidade_bot)
+                res2 = iniciando_criacao_instagram(
+                    device=device, numero=numero, senha=senha, nome=nome, usuario=usuario, velocidade_bot=velocidade_bot)
+                if not res1 or res2 == 4:
+                    break
+        else:
+            continue  # Continua o lop while
