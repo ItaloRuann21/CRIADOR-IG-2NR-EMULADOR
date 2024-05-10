@@ -5,9 +5,11 @@ from time import sleep
 import uiautomator2 as u2
 
 from _2nr.acessar_conta_2nr import acessar_conta_2nr
+from _2nr.criar_conta_2nr import criar_conta_2nr, logar_no_2nr
 from _2nr.criar_numero import criando_numero
 from clonador.varias_contas import configurar_varias_contas
 from configuracoes_usuario import configuracao
+from emails.app_temp_mail import pegar_codigo, pegar_email
 from instagram.criando_conta_instagram import iniciando_criacao_instagram
 from mensagens.mensagens import mensagem_atencao, mensagem_normal
 from utils.gerar_dados_perfil import gerar_dados_perfil
@@ -24,7 +26,7 @@ from vpn.trocar_ip import trocar_ip
 
 def main():
     # Configurações de usuário
-    porta, definir_vpn, quantidade_contas_por_numero, velocidade_bot, genero = configuracao()
+    porta, definir_vpn, quantidade_contas_por_numero, velocidade_bot, genero, _2nr = configuracao()
 
     os.system("adb devices")
 
@@ -51,18 +53,46 @@ def main():
 
     while True:
 
-        # Apagando conta 2nr
-        quantidade_tentativas = 0
-        res = acessar_conta_2nr(device=device, velocidade_bot=velocidade_bot)
-        if not res:
-            while quantidade_tentativas < 4:
+        if _2nr == '1':
+            # Apagando conta 2nr e logando via gmail
+            quantidade_tentativas = 0
+            res = acessar_conta_2nr(
+                device=device, velocidade_bot=velocidade_bot)
+            if not res:
+                while quantidade_tentativas < 4:
+                    trocar_ip(device=device, vpns=vpns,
+                              velocidade_bot=velocidade_bot)
+                    res = acessar_conta_2nr(
+                        device=device, velocidade_bot=velocidade_bot)
+                    if res:
+                        break
+                    quantidade_tentativas += 1
+
+        if _2nr == '2':
+
+            # Pegando email do aplicativo temp mail
+            email = pegar_email(device=device, velocidade_bot=velocidade_bot)
+            if not email:
+                continue
+
+            # Entrar no 2nr
+            res = criar_conta_2nr(
+                device=device, velocidade_bot=velocidade_bot, email=email)
+            if not res:
+                continue
+
+            # Receber caixa de entrada do aplicativo temp mail
+            res = pegar_codigo(device=device, velocidade_bot=velocidade_bot)
+            if not res:
+                continue
+
+            # Logar no 2nr
+            res = logar_no_2nr(
+                device=device, velocidade_bot=velocidade_bot, email=email)
+            if not res:
                 trocar_ip(device=device, vpns=vpns,
                           velocidade_bot=velocidade_bot)
-                res = acessar_conta_2nr(
-                    device=device, velocidade_bot=velocidade_bot)
-                if res:
-                    break
-                quantidade_tentativas += 1
+                continue
 
         # Criando numero 2nr
         numero = criando_numero(device=device, velocidade_bot=velocidade_bot)

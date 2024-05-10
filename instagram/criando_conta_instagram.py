@@ -25,7 +25,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         mensagem_normal(' Adicionando número 2nr')
         resposta = False
         for x in range(30):
-            
+
             if device(description='Número do celular').exists:
                 device(className='android.widget.EditText').click()
                 resposta = True
@@ -41,9 +41,10 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
                 resposta = True
                 break
         if not resposta:
-            mensagem_erro(' Não foi possível identificar o elemento de número 2nr. Pagina indisponível.')
+            mensagem_erro(
+                ' Não foi possível identificar o elemento de número 2nr. Pagina indisponível.')
             return False
-        
+
         sleep(velocidade_bot)
 
         # Preecnher numero
@@ -208,14 +209,28 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
 
         # Definindo o nome completo
         mensagem_normal(' Digitando o nome completo.')
-        resposta = device(focused=True).exists(timeout=30)
-        if resposta:
-            device(focused=True).set_text(nome)
-            mensagem_normal(' Nome completo: ' + nome)
-        else:
+        seletor = False
+        for _ in range(30):
+
+            if device(focused=True).exists:
+                device(focused=True).set_text(nome)
+                mensagem_normal(' Nome completo: ' + nome)
+                seletor = True
+                break
+
+            if device(focused=False).exists:
+                device(text='Nome completo').click()
+                device(focused=True).set_text(nome)
+                mensagem_normal(' Nome completo: ' + nome)
+                seletor = True
+                break
+
+            sleep(1)
+        if seletor == False:
             mensagem_erro(
                 ' Não foi possível adicionar o nome completo no input')
             return False
+
         sleep(velocidade_bot)
 
         # Clicar em avançar

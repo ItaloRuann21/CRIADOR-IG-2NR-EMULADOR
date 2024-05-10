@@ -29,4 +29,7 @@ def configuracao():
     velocidade_bot = int(input('> '))
     print('')
 
-    return porta, definir_vpn, quantidade_contas_por_numero, velocidade_bot, genero
+    mensagem_atencao(' Defina qual opção você deseja:')
+    _2nr = input('1- Logar no 2NR via Gmail\n2- Criação de conta 2nr\n> ')
+
+    return porta, definir_vpn, quantidade_contas_por_numero, velocidade_bot, genero, _2nr

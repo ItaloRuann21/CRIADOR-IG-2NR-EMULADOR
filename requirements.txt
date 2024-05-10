@@ -1,7 +1,6 @@
 uiautomator2
 setuptools
-opencv-python
 colorama
-playwright
 pyinstaller
 pymongo
+nuitka
