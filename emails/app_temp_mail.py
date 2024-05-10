@@ -1,5 +1,6 @@
 from time import sleep
 
+from mensagens.mensagens import mensagem_normal
 from utils.gerar_dados_perfil import gerar_dados_perfil
 
 
@@ -14,8 +15,10 @@ def pegar_email(device, velocidade_bot):
         # Abrir Temp Mail
         device.app_start('io.tempmail.android', use_monkey=True)
         sleep(velocidade_bot)
+        mensagem_normal(' Iniciando o Temp Mail.')
 
         # CLicar em CHOOSE
+        mensagem_normal(' Criando um email temporário.')
         device(text='CHOOSE').wait(30)
         device(text='CHOOSE').click()
         sleep(velocidade_bot)
@@ -44,6 +47,7 @@ def pegar_email(device, velocidade_bot):
         device(resourceId='io.tempmail.android:id/currentEmailTV').wait(30)
         email = device(
             resourceId='io.tempmail.android:id/currentEmailTV').get_text()
+        mensagem_normal(' Email temporário criado: ' + email)
 
         return email
     except:
@@ -57,6 +61,7 @@ def pegar_codigo(device, velocidade_bot):
         sleep(velocidade_bot)
 
         # Clicar no Mailbox
+        mensagem_normal(' Aguardando caixa de entrada do 2NR.')
         device(description='Mailbox').wait(30)
         device(description='Mailbox').click()
 
@@ -70,6 +75,7 @@ def pegar_codigo(device, velocidade_bot):
 
             # Se aparecer mensagem na caixa de entrada, coleta e para
             if device(text='Mobilelabs Sp. z o.o. ').exists:
+                mensagem_normal(' A caixa de entrada do 2nr chegou.')
                 device(text='Mobilelabs Sp. z o.o. ').click()
                 caixa_entrada = True
                 break
@@ -83,13 +89,22 @@ def pegar_codigo(device, velocidade_bot):
         device(className='android.webkit.WebView').wait(30)
         caixa_mensagem = device(className='android.webkit.WebView').get_text()
         if caixa_mensagem == 'Twoje konto w aplikacji 2nr zostało aktywowane':
+            mensagem_normal(' Clicando no link do 2nr.')
             device.click(0.501, 0.878)
         sleep(velocidade_bot)
 
-        # Clicar em Só uma vez
-        device(text='Só uma vez').wait(30)
-        device(text='Só uma vez').click()
-        sleep(velocidade_bot)
+        # Clicar no brave
+        mensagem_normal(' Abrindo o Brave.')
+        for x in range(30):
+
+            if device(text='Abrir com Brave').exists:
+                device(text='Só uma vez').click()
+                break
+            if device(text='Brave').exists:
+                device(text='Brave').click()
+                break
+
+            sleep(1)
 
         # Configura o brave
         device(text='Não agora').wait(30)
@@ -102,8 +117,16 @@ def pegar_codigo(device, velocidade_bot):
         sleep(velocidade_bot)
 
         # Se aparecer esse texto drugi-numer.pl/pl/faq? então a conta do 2nr foi ativada!
-        if device(text='drugi-numer.pl/pl/faq?').wait(30):
-            device.app_clear('com.brave.browser')
+        for _ in range(30):
+
+            if device(text='Toque para ver as Proteções do Brave').exists:
+                device.click(0.504, 0.575)
+
+            if device(text='drugi-numer.pl/pl/faq?').exists:
+                device.app_clear('com.brave.browser')
+                mensagem_normal(' Conta 2NR ativada com sucesso!')
+                break
+            sleep(1)
 
         return True
     except:

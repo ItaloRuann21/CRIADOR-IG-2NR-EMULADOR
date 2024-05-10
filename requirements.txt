@@ -1,4 +1,4 @@
-uiautomator2
+uiautomator2==3.0.1
 setuptools
 colorama
 pyinstaller

@@ -13,11 +13,13 @@ def logar_no_2nr(device, velocidade_bot, email):
         # Abrir 2nr
         device.app_start('pl.rs.sip.softphone.newapp', use_monkey=True)
         sleep(velocidade_bot)
+        mensagem_normal(' Iniciando o 2NR.')
 
         # Clicar em Login
         device(text='LOGIN').wait(30)
         device(text='LOGIN').click()
         sleep(velocidade_bot)
+        mensagem_normal(' Logando no 2NR.')
 
         # Clicar em Email e digitar email
         device(resourceId='pl.rs.sip.softphone.newapp:id/inputEmail').wait(30)
@@ -34,6 +36,7 @@ def logar_no_2nr(device, velocidade_bot, email):
         # Clicar em Login
         device(text='LOG IN').wait(30)
         device(text='LOG IN').click()
+        mensagem_normal(' Logado com sucesso no 2NR.')
 
         return True
     except:
@@ -62,6 +65,7 @@ def criar_conta_2nr(device, velocidade_bot, email):
         sleep(velocidade_bot)
 
         # Clicar em REGISTRATION
+        mensagem_normal(' Registrando uma nova conta 2NR.')
         device(text='REGISTRATION').wait(30)
         device(text='REGISTRATION').click()
         sleep(velocidade_bot)
@@ -94,6 +98,7 @@ def criar_conta_2nr(device, velocidade_bot, email):
         # Se aparecer isso A link to activate your account has been sent to the email address you provided
         if device(text='A link to activate your account has been sent to the email address you provided').wait(30):
             return True
+        mensagem_normal(' Conta registrada, esperando ativação.')
 
     except:
         return False

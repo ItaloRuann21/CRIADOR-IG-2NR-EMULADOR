@@ -77,7 +77,12 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         # Verificar se existe Confirmar por ligação telefônica
         if device(text='Confirmar por ligação telefônica').exists(timeout=8):
             device(text='Enviar código por SMS').click()
-            avançar()
+
+            # Verificar se existre botão de envir código ou avançar
+            if device(text='Enviar código').exists(timeout=10):
+                device(text='Enviar código').click()
+            else:
+                avançar()
 
         sleep(velocidade_bot)
 
@@ -241,10 +246,10 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         # Definindo um nome de usuario
         resposta = device(text='Crie um nome de usuário').exists(timeout=30)
         if resposta:
-            device(className='android.widget.EditText').click()
+            # device(className='android.widget.EditText').click()
             sleep(velocidade_bot)
-            device(className='android.widget.EditText').clear_text()
-            device(className='android.widget.EditText').set_text(usuario)
+            # device(className='android.widget.EditText').clear_text()
+            # device(className='android.widget.EditText').set_text(usuario)
             usuario = device(className='android.widget.EditText').get_text()
             mensagem_normal(' Nome de usuário definido: ' + usuario)
         else:
