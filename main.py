@@ -48,10 +48,10 @@ def main():
         vpns = [conectar_surfshake, fast_vpn_freedom,
                 vpn_unlimited_proxy, avg_vpn_conect]
 
-    # Função para conectar na VPN
-    trocar_ip(device, vpns, velocidade_bot=velocidade_bot)
-
     while True:
+
+        # Função para conectar na VPN
+        trocar_ip(device, vpns, velocidade_bot=velocidade_bot)
 
         if _2nr == '1':
             # Apagando conta 2nr e logando via gmail
@@ -90,8 +90,6 @@ def main():
             res = logar_no_2nr(
                 device=device, velocidade_bot=velocidade_bot, email=email)
             if not res:
-                trocar_ip(device=device, vpns=vpns,
-                          velocidade_bot=velocidade_bot)
                 continue
 
         # Criando numero 2nr
