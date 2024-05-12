@@ -7,6 +7,7 @@ import uiautomator2 as u2
 from _2nr.acessar_conta_2nr import acessar_conta_2nr
 from _2nr.criar_conta_2nr import criar_conta_2nr, logar_no_2nr
 from _2nr.criar_numero import criando_numero
+from atx import configurando_atx
 from clonador.varias_contas import configurar_varias_contas
 from configuracoes_usuario import configuracao
 from emails.app_temp_mail import pegar_codigo, pegar_email
@@ -29,6 +30,8 @@ def main():
     porta, definir_vpn, quantidade_contas_por_numero, velocidade_bot, genero, _2nr = configuracao()
 
     os.system("adb devices")
+
+    configurando_atx()
 
     device = u2.connect(f'127.0.0.1:{porta}')  # Conectar ao UiAutomator2
 
@@ -152,3 +155,6 @@ def main():
                     break
         else:
             continue  # Continua o lop while
+
+
+main()
