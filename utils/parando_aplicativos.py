@@ -19,5 +19,8 @@ def forçar_parada(device):
     # Varias Contas
     device.app_stop('com.excelliance.multiaccounts')
 
+    # 2accounts
+    device.app_stop('com.excelliance.multiaccount')
+
     # AVG VPN
     device.app_stop('com.avg.android.vpn')

@@ -8,7 +8,9 @@ from _2nr.acessar_conta_2nr import acessar_conta_2nr
 from _2nr.criar_conta_2nr import criar_conta_2nr, logar_no_2nr
 from _2nr.criar_numero import criando_numero
 from atx import configurando_atx
-from clonador.varias_contas import configurar_varias_contas
+from clonadores._2accounts import configurar_2_accounts
+from clonadores.aplicativo_paralelo import configurar_aplicativo_paralelo
+from clonadores.varias_contas import configurar_varias_contas
 from configuracoes_usuario import configuracao
 from emails.app_temp_mail import pegar_codigo, pegar_email
 from instagram.criando_conta_instagram import iniciando_criacao_instagram
@@ -27,9 +29,10 @@ from vpn.trocar_ip import trocar_ip
 
 def main():
     # Configurações de usuário
-    porta, definir_vpn, quantidade_contas_por_numero, velocidade_bot, genero, _2nr = configuracao()
+    porta, definir_vpn, quantidade_contas_por_numero, velocidade_bot, genero, _2nr, clonador = configuracao()
 
     os.system("adb devices")
+    sleep(1)
 
     configurando_atx()
 
@@ -110,18 +113,47 @@ def main():
             nome, usuario = gerar_dados_perfil(genero=genero)
 
             # Configurando varias contas
-            quantidade_tentativas = 0
-            res = configurar_varias_contas(
-                device=device, velocidade_bot=velocidade_bot)
-            if not res:
-                while quantidade_tentativas < 4:
-                    trocar_ip(device=device, vpns=vpns,
-                              velocidade_bot=velocidade_bot)
-                    res = configurar_varias_contas(
-                        device=device, velocidade_bot=velocidade_bot)
-                    if res:
-                        break
-                    quantidade_tentativas += 1
+            if clonador == '1':
+                quantidade_tentativas = 0
+                res = configurar_varias_contas(
+                    device=device, velocidade_bot=velocidade_bot)
+                if not res:
+                    while quantidade_tentativas < 4:
+                        trocar_ip(device=device, vpns=vpns,
+                                  velocidade_bot=velocidade_bot)
+                        res = configurar_varias_contas(
+                            device=device, velocidade_bot=velocidade_bot)
+                        if res:
+                            break
+                        quantidade_tentativas += 1
+
+            if clonador == '2':
+                quantidade_tentativas = 0
+                res = configurar_2_accounts(
+                    device=device, velocidade_bot=velocidade_bot)
+                if not res:
+                    while quantidade_tentativas < 4:
+                        trocar_ip(device=device, vpns=vpns,
+                                  velocidade_bot=velocidade_bot)
+                        res = configurar_2_accounts(
+                            device=device, velocidade_bot=velocidade_bot)
+                        if res:
+                            break
+                        quantidade_tentativas += 1
+
+            if clonador == '3':
+                quantidade_tentativas = 0
+                res = configurar_aplicativo_paralelo(
+                    device=device, velocidade_bot=velocidade_bot)
+                if not res:
+                    while quantidade_tentativas < 4:
+                        trocar_ip(device=device, vpns=vpns,
+                                  velocidade_bot=velocidade_bot)
+                        res = configurar_aplicativo_paralelo(
+                            device=device, velocidade_bot=velocidade_bot)
+                        if res:
+                            break
+                        quantidade_tentativas += 1
 
             # Iniciando criação
             res = iniciando_criacao_instagram(
@@ -147,8 +179,16 @@ def main():
             if res == 4:
                 trocar_ip(device=device, vpns=vpns,
                           velocidade_bot=velocidade_bot)
-                res1 = configurar_varias_contas(
-                    device=device, velocidade_bot=velocidade_bot)
+                if clonador == '1':
+                    res1 = configurar_varias_contas(
+                        device=device, velocidade_bot=velocidade_bot)
+                if clonador == '2':
+                    res1 = configurar_2_accounts(
+                        device=device, velocidade_bot=velocidade_bot)
+                if clonador == '3':
+                    res1 = configurar_aplicativo_paralelo(
+                        device=device, velocidade_bot=velocidade_bot)
+
                 res2 = iniciando_criacao_instagram(
                     device=device, numero=numero, senha=senha, nome=nome, usuario=usuario, velocidade_bot=velocidade_bot)
                 if not res1 or res2 == 4:

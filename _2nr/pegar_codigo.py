@@ -42,10 +42,12 @@ def pegar_codigo(device, velocidade_bot):
 
                 # Voltando ao Varias contas
                 device.press('recent')
+                sleep(1)
+                device.press('recent')
                 sleep(velocidade_bot)
 
-                # Clica na posição x e y da tela para voltar ao instagram
-                device(description='Várias contas (Várias contas)').click()
+                # # Clica na posição x e y da tela para voltar ao instagram
+                # device(description='Várias contas (Várias contas)').click()
 
                 return codigo
 

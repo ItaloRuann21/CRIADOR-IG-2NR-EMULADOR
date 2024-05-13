@@ -90,7 +90,6 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         if device(text='Ocorreu um erro. Tente novamente mais tarde.').exists(timeout=7):
             mensagem_atencao(
                 ' Erro no número. Trocando IP e limpando dados do clonador.')
-            device.app_clear('com.excelliance.multiaccounts')
             return 4
         sleep(velocidade_bot)
 
@@ -284,7 +283,6 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
 
             if device(text='Fazer uma apelação').exists:
                 mensagem_desativada(' CONTA SOFREU SMS!')
-                device.app_clear('com.excelliance.multiaccounts')
                 criou = False
                 return 2
 
@@ -294,7 +292,6 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
                 print(Fore.YELLOW + 'Quantidade criadas: ' + Style.RESET_ALL +
                       Fore.GREEN + str(contador_contas) + Style.RESET_ALL)
                 contas_criadas(usuario, senha)
-                device.app_clear('com.excelliance.multiaccounts')
                 criou = True
                 return 3
 
@@ -304,7 +301,6 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
                 print(Fore.YELLOW + 'Quantidade criadas: ' + Style.RESET_ALL +
                       Fore.GREEN + str(contador_contas) + Style.RESET_ALL)
                 contas_criadas(usuario, senha)
-                device.app_clear('com.excelliance.multiaccounts')
                 criou = True
                 return 3
 
@@ -314,7 +310,6 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
                 print(Fore.YELLOW + 'Quantidade criadas: ' + Style.RESET_ALL +
                       Fore.GREEN + str(contador_contas) + Style.RESET_ALL)
                 contas_criadas(usuario, senha)
-                device.app_clear('com.excelliance.multiaccounts')
                 criou = True
                 return 3
 
