@@ -24,3 +24,6 @@ def forçar_parada(device):
 
     # AVG VPN
     device.app_stop('com.avg.android.vpn')
+
+    # 2nr
+    device.app_stop('pl.rs.sip.softphone.newapp')

@@ -44,10 +44,14 @@ def configurar_varias_contas(device, velocidade_bot):
         sleep(velocidade_bot)
 
         # Se nao iniciar de primeira e aparecer aplicativo do instagram, clica.
-        for x in range(30):
+        for x in range(40):
 
             if device(text='Instagram').exists:
                 device(text='Instagram').click()
+
+            # Se aparecer erro de idioma
+            if device(text='Continuar em inglês (EUA)').exists:
+                device(text='Continuar em inglês (EUA)').click()
 
             if device(text='Criar nova conta').exists:
                 device(text='Criar nova conta').click()
@@ -70,6 +74,10 @@ def configurar_varias_contas(device, velocidade_bot):
 
                 if device(text='Instagram').exists:
                     device(text='Instagram').click()
+
+                # Se aparecer erro de idioma
+                if device(text='Continuar em inglês (EUA)').exists:
+                    device(text='Continuar em inglês (EUA)').click()
 
                 if device(text='Criar nova conta').exists:
                     device(text='Criar nova conta').click()

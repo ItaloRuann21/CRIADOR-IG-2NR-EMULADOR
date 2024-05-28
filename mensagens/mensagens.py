@@ -6,7 +6,7 @@ from colorama import Back, Fore, Style, init
 from tempo_terminal.tempo import tempo_execucao
 
 # Inicializa o colorama
-tempo = tempo_execucao(Fore.CYAN + 'Creator IG v6.9' + Style.RESET_ALL)
+tempo = tempo_execucao(Fore.CYAN + 'Creator IG v7.0.2' + Style.RESET_ALL)
 init()
 
 
@@ -24,6 +24,10 @@ def mensagem_erro(mensagem):
 
 def mensagem_desativada(mensagem):
     print(next(tempo) + Fore.MAGENTA + mensagem + Style.RESET_ALL)
+
+
+def mensagem_info(mensagem):
+    print(next(tempo) + Fore.LIGHTBLUE_EX + mensagem + Style.RESET_ALL)
 
 
 def mensagem_atencao(mensagem):

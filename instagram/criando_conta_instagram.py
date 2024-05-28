@@ -69,10 +69,21 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         avançar()
         sleep(velocidade_bot)
 
-        # Se aparecer "Você está tentando entrar?"
-        if device(text='Criar nova conta').exists(timeout=10):
-            mensagem_normal(' Clicando em Criar nova conta.')
-            device(text='Criar nova conta').click()
+        for _ in range(30):
+
+            # Se aparecer pagina indisponivel
+            if device(text='A Página não está disponível no momento').exists:
+                mensagem_normal(
+                    ' Pagina indisponível no momento. Resolvendo...')
+                device.press('back')
+                break
+
+            if device(text='Criar nova conta').exists:
+                mensagem_normal(' Clicando em Criar nova conta.')
+                device(text='Criar nova conta').click()
+                break
+
+            sleep(1)
 
         # Verificar se existe Confirmar por ligação telefônica
         if device(text='Confirmar por ligação telefônica').exists(timeout=8):
@@ -109,6 +120,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
 
             if not codigo and tentativas == 2:
                 mensagem_erro(' Código do 2nr não chegou após 2 tentativas')
+                device.app_stop('pl.rs.sip.softphone.newapp')
                 return 1
         else:
             mensagem_erro(

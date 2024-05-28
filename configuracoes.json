@@ -1,8 +1,7 @@
 {
-  "clonador": "1",
-  "definir_vpn": "4",
-  "quantidade_contas_por_numero": "5",
-  "genero": "1",
-  "velocidade_bot": 2,
-  "_2nr": "1"
+    "clonador": "1",
+    "definir_vpn": "2",
+    "quantidade_contas_por_numero": "5",
+    "genero": "1",
+    "velocidade_bot": 2
 }

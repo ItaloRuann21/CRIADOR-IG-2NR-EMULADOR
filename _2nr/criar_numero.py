@@ -1,23 +1,46 @@
 from time import sleep
 
-from mensagens.mensagens import (mensagem_erro, mensagem_normal,
+from mensagens.mensagens import (mensagem_erro, mensagem_info, mensagem_normal,
                                  mensagem_sucesso)
 from utils.gerar_nome_numero import nome_do_numero
 
 
 def criando_numero(device, velocidade_bot):
     try:
+        # Abrir 2nr
+        device.app_start('pl.rs.sip.softphone.newapp', use_monkey=True)
+
+        # Se existir uma tela de login
+        if device(text='LOGIN').exists(timeout=5):
+            return 2
+
+            # Verificar se numero existe. Se existe, exclui
+        mensagem_normal(' Verificando se existe algum número recente no 2nr.')
+        if device(resourceId='pl.rs.sip.softphone.newapp:id/phoneNumber').exists(10):
+            mensagem_normal(' Removendo número existente.')
+            device(resourceId='pl.rs.sip.softphone.newapp:id/phoneNumber').click()
+            sleep(velocidade_bot)
+            device(text='Delete').wait(5)
+            device(text='Delete').click()
+            sleep(velocidade_bot)
+            device(text='Yes').wait(5)
+            device(text='Yes').click()
 
         # Clicar no Icone de Criar numero
         try:
             seletor = 'Add button'
-            if device(description=seletor).exists(timeout=30):
+            if device(description=seletor).wait(timeout=30):
                 device(description=seletor).click()
         except Exception as erro:
             mensagem_erro(' Erro no seletor de Criar número no 2nr')
             print(erro)
             return False
         sleep(velocidade_bot)
+
+        # Se aparecer mensagem que numero ja foi criado muitas vezes, returna 1
+        if device(text='You have used up your number limit for today. Try again tomorrow.').exists(5):
+            mensagem_info(' Limite de número criado excedido.')
+            return 1
 
         # Inventar um nome aleatório para o número
         try:
@@ -29,7 +52,7 @@ def criando_numero(device, velocidade_bot):
         except Exception as erro:
             mensagem_erro(' Erro ao gerar nome aleatório no número')
             print(erro)
-            return False
+            return 1
         sleep(velocidade_bot)
 
         # Clicar em SAve
@@ -83,9 +106,7 @@ def criando_numero(device, velocidade_bot):
             sleep(velocidade_bot)
 
             return numero
-        else:
-            mensagem_erro(' Erro no 2nr.')
-            return False
+
     except Exception as erro:
         print(erro)
         return False

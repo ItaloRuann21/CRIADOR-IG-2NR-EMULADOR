@@ -42,17 +42,23 @@ def avg_vpn_conect(device, velocidade_bot):
         sleep(velocidade_bot)
 
         # Se aparecer mensagem de avaliação de 5 estrelas
-        if device(text='Você está recebendo uma experiência 5 estrelas?').exists(timeout=5):
-            sleep(1)
-            device.press('back')
-        sleep(velocidade_bot)
+        for x in range(30):
 
-        # Verificando se a vpn está conectada.
-        resposta = device(
-            resourceId='com.avg.android.vpn:id/on').exists(timeout=5)
-        if resposta:
-            device(resourceId='com.avg.android.vpn:id/on').click()
-            mensagem_normal(' Desconectando VPN')
+            sleep(1)
+            # Verificar se aparece a msg de 5 estrelas
+            if device(text='Você está recebendo uma experiência 5 estrelas?').exists:
+                device.press('back')
+
+            # Se vpn estiver conectada.
+            if device(resourceId='com.avg.android.vpn:id/on').exists:
+                device(resourceId='com.avg.android.vpn:id/on').click()
+                mensagem_normal(' Desconectando VPN')
+                break
+
+            # Se a vpn estiver desconectada
+            if device(resourceId='com.avg.android.vpn:id/off').exists:
+                break
+
         sleep(velocidade_bot)
 
         # Clicar em Localização Ideal

@@ -53,10 +53,6 @@ def configuracao():
         input('> ') or configuracoes_salvas.get("velocidade_bot", ""))
     print('')
 
-    mensagem_atencao(
-        f' Defina qual opção você deseja: [PADRAO: {configuracoes_salvas.get("_2nr", "")}]')
-    _2nr = input(
-        '1- Logar no 2NR via Gmail\n2- Criação de conta 2nr\n> ') or configuracoes_salvas.get("_2nr", "")
 
     # Salvar configurações em um dicionário
     config = {
@@ -65,11 +61,10 @@ def configuracao():
         "quantidade_contas_por_numero": quantidade_contas_por_numero,
         "genero": genero,
         "velocidade_bot": velocidade_bot,
-        "_2nr": _2nr
     }
 
     # Salvar configurações em um arquivo JSON
     salvar_configuracoes(config)
     mensagem_sucesso('Configurações salvas com sucesso!')
 
-    return porta, definir_vpn, quantidade_contas_por_numero, velocidade_bot, genero, _2nr, clonador
+    return porta, definir_vpn, quantidade_contas_por_numero, velocidade_bot, genero, clonador
