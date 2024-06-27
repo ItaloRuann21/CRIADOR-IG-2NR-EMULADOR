@@ -54,19 +54,37 @@ def criando_numero(device, velocidade_bot):
             print(erro)
             return 1
         sleep(velocidade_bot)
+        sucess = False
+        # Verificando se apareceu numeros disponiveis
+        for _ in range(60):
 
-        # Clicar em SAve
-        seletor = 'pl.rs.sip.softphone.newapp:id/save'
-        device(resourceId=seletor).wait(30)
-        device(resourceId=seletor).click()
+            if device(resourceId='pl.rs.sip.softphone.newapp:id/save').exists:
+                device(resourceId='pl.rs.sip.softphone.newapp:id/save').click()
+
+            if device(text='You need to draw for a phone number').exists:
+                for _ in range(30):
+                    if device(text='OK').exists:
+                        device(text='OK').click()
+                        break
+                    if device(text='ok').exists:
+                        device(text='ok').click()
+                        break
+                    sleep(1)
+                sleep(1)
+                device.swipe(0.517, 0.205, 0.498, 0.853, 0.3)
+
+            # Caso apareca I Agree
+            if device(resourceId='pl.rs.sip.softphone.newapp:id/buttonAgree').exists:
+                device(resourceId='pl.rs.sip.softphone.newapp:id/buttonAgree').click()
+                sucess = True
+                break
+            sleep(1)
+        if not sucess:
+            return False
+
         sleep(velocidade_bot)
-
-        #  I agree
+        #  Clicando novamente em I Agree
         seletor = 'pl.rs.sip.softphone.newapp:id/buttonAgree'
-        device(resourceId=seletor).wait(30)
-        device(resourceId=seletor).click()
-        sleep(velocidade_bot)
-
         device(resourceId=seletor).wait(30)
         device(resourceId=seletor).click()
         sleep(velocidade_bot)

@@ -146,8 +146,6 @@ def main():
                 continue
             # Se o código não chegou, saia do lop for
             if res == 1:
-                trocar_ip(device=device, vpns=vpns,
-                          velocidade_bot=velocidade_bot)
                 break
             # Se a conta foi suspensa, troca vpn e continua
             if res == 2:

@@ -10,22 +10,18 @@ def pegar_codigo(device, velocidade_bot):
         device.app_start('pl.rs.sip.softphone.newapp', use_monkey=True)
         sleep(velocidade_bot)
 
-        # Clicando na mensagem
-        seletor = '//*[@resource-id="pl.rs.sip.softphone.newapp:id/messages"]/android.widget.FrameLayout[1]'
-        if device.xpath(seletor).wait(30):
-            device.xpath(seletor).click()
+        # Clicando na aba de navegação de mensagens
+        seletor = 'Messages'
+        if device(description=seletor).wait(30):
+            device(description=seletor).click()
             sleep(velocidade_bot)
 
             # Coletando codigo
             seletor = '//*[@resource-id="pl.rs.sip.softphone.newapp:id/message"]'
             if device.xpath(seletor).wait(30):
-                codigo_encontrado = device.xpath(seletor)
-                codigo_texto = codigo_encontrado.get_text()
-                codigo_split = codigo_texto.split(' ')
-                codigo_part1 = codigo_split[6]
-                codigo_part2 = codigo_split[7]
-                codigo_novo = codigo_part1 + codigo_part2
-                codigo = codigo_novo.replace('.', '')
+                seletor = 'pl.rs.sip.softphone.newapp:id/message'
+                mensagem = device(resourceId=seletor).get_text()
+                codigo = mensagem.split('Instagram e')[1].split('.')[0].replace(' ', '')
                 sleep(velocidade_bot)
 
                 # Clicar na engrenagem de confdiguração
