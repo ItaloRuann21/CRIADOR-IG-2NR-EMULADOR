@@ -1,4 +1,3 @@
-
 import os
 from time import sleep
 
@@ -67,6 +66,7 @@ def main():
                 if res:
                     break
                 quantidade_tentativas += 1
+
     acessar_conta()
 
     while True:
@@ -170,7 +170,8 @@ def main():
                         device=device, velocidade_bot=velocidade_bot)
 
                 res2 = iniciando_criacao_instagram(
-                    device=device, numero=numero, senha=senha, nome=nome, usuario=usuario, velocidade_bot=velocidade_bot)
+                    device=device, numero=numero, senha=senha, nome=nome, usuario=usuario,
+                    velocidade_bot=velocidade_bot)
                 if not res1 or res2 == 4:
                     break
         else:

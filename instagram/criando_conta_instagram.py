@@ -173,12 +173,25 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         sleep(velocidade_bot)
 
         # Clicar em DEFINIR
-        resposta = device(text='DEFINIR').exists(timeout=30)
-        if resposta:
-            device(text='DEFINIR').click()
-        else:
-            mensagem_erro(' Erro ao clicar em DEFINIR')
+        seletor = False
+        for _ in range(30):
+            
+            if device(text='DEFINIR').exists:
+                device(text='DEFINIR').click()
+                seletor = True
+                break
+            
+            if device(text='SET').exists:
+                device(text='SET').click()
+                seletor = True
+                break
+            
+            sleep(1)
+        if not seletor:
+            mensagem_erro(' Erro ao clicar em DEFINIR/SET')
             return False
+        
+            
         sleep(velocidade_bot)
 
         # Clicar em avançar
