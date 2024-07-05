@@ -98,7 +98,7 @@ def criando_numero(device, velocidade_bot):
         # Se aparecer a mensagem de verificação com sucesso, então criou o número!
         seletor = 'Successful verification'
         contador = 0
-        while contador < 3:
+        while contador < 6:
             if device(text=seletor).exists(10):
                 device(resourceId='pl.rs.sip.softphone.newapp:id/save').click()
                 break
