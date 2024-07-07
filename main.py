@@ -176,3 +176,4 @@ def main():
                     break
         else:
             continue  # Continua o lop while
+# main()

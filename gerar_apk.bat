@@ -1,4 +1,4 @@
-pyinstaller --onefile --name Criador_v7.0.8 --icon=./vpn/logo.ico login.py
+pyinstaller --onefile --name Criador_v7.1.0 --icon=./vpn/logo.ico login.py
 xcopy /s /i /e /q /y .\apks .\dist\apks\
 xcopy /s /i /e /q /y .\nomes .\dist\nomes\
 xcopy /s /i /e /q /y .\vpn .\dist\vpn\

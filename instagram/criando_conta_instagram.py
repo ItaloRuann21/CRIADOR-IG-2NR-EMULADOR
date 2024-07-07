@@ -1,4 +1,3 @@
-
 from random import randint
 from time import sleep
 
@@ -6,13 +5,21 @@ from colorama import Back, Fore, Style, init
 
 from _2nr.pegar_codigo import pegar_codigo
 from contas import contas_criadas, nao_criou
+from utils.criar_conta_bd import create_conta_bd
 from mensagens.mensagens import (mensagem_atencao, mensagem_desativada,
                                  mensagem_erro, mensagem_normal,
                                  mensagem_sucesso)
-from vpn.trocar_ip import trocar_ip
 
 # Iniciando contador
 contador_contas = 0
+
+
+def criar_conta_bd(usuario, senha):
+    res = create_conta_bd(usuario, senha)
+    if not res:
+        res = create_conta_bd(usuario, senha)
+        if not res:
+            contas_criadas(usuario, senha)
 
 
 def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade_bot):
@@ -66,6 +73,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
             else:
                 mensagem_erro(' Não clicou em avançar.')
                 return False
+
         avançar()
         sleep(velocidade_bot)
 
@@ -175,23 +183,22 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         # Clicar em DEFINIR
         seletor = False
         for _ in range(30):
-            
+
             if device(text='DEFINIR').exists:
                 device(text='DEFINIR').click()
                 seletor = True
                 break
-            
+
             if device(text='SET').exists:
                 device(text='SET').click()
                 seletor = True
                 break
-            
+
             sleep(1)
         if not seletor:
             mensagem_erro(' Erro ao clicar em DEFINIR/SET')
             return False
-        
-            
+
         sleep(velocidade_bot)
 
         # Clicar em avançar
@@ -201,7 +208,8 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
 
         # Se aparecer o erro
         resposta = device(
-            text='Parece que você inseriu informações incorretas. Use sua data de nascimento verdadeira.').exists(timeout=30)
+            text='Parece que você inseriu informações incorretas. Use sua data de nascimento verdadeira.').exists(
+            timeout=30)
         if resposta:
             device(text='Avançar').click()
         else:
@@ -316,7 +324,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
                 contador_contas += 1
                 print(Fore.YELLOW + 'Quantidade criadas: ' + Style.RESET_ALL +
                       Fore.GREEN + str(contador_contas) + Style.RESET_ALL)
-                contas_criadas(usuario, senha)
+                criar_conta_bd(usuario, senha)
                 criou = True
                 return 3
 
@@ -325,7 +333,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
                 contador_contas += 1
                 print(Fore.YELLOW + 'Quantidade criadas: ' + Style.RESET_ALL +
                       Fore.GREEN + str(contador_contas) + Style.RESET_ALL)
-                contas_criadas(usuario, senha)
+                criar_conta_bd(usuario, senha)
                 criou = True
                 return 3
 
@@ -334,7 +342,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
                 contador_contas += 1
                 print(Fore.YELLOW + 'Quantidade criadas: ' + Style.RESET_ALL +
                       Fore.GREEN + str(contador_contas) + Style.RESET_ALL)
-                contas_criadas(usuario, senha)
+                create_conta_bd(usuario, senha)
                 criou = True
                 return 3
 
