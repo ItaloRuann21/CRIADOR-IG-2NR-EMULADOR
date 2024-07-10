@@ -3,4 +3,4 @@ setuptools
 colorama
 pyinstaller
 pymongo
-nuitka
+opencv-python

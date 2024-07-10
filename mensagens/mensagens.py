@@ -6,7 +6,7 @@ from colorama import Back, Fore, Style, init
 from tempo_terminal.tempo import tempo_execucao
 
 # Inicializa o colorama
-tempo = tempo_execucao(Fore.CYAN + 'Creator IG v7.1.0' + Style.RESET_ALL)
+tempo = tempo_execucao(Fore.CYAN + 'Creator IG v7.1.6' + Style.RESET_ALL)
 init()
 
 

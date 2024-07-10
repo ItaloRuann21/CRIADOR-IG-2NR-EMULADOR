@@ -39,12 +39,15 @@ def configurar_varias_contas(device, velocidade_bot):
 
         # Se aparecer essa mensage, clica em OK
         seletor = 'Para que Instagram seja executado corretamente, conceda estas permissões: • Telefone'
-        device(text=seletor).wait(30)
-        device(text='OK').click()
+        if device(text=seletor).exists(30):
+            device(text='OK').click()
         sleep(velocidade_bot)
 
         # Se nao iniciar de primeira e aparecer aplicativo do instagram, clica.
-        for x in range(40):
+        for x in range(60):
+
+            if device(text='Cancelar').exists:
+                device(text='Cancelar').click()
 
             if device(text='Instagram').exists:
                 device(text='Instagram').click()
@@ -70,7 +73,7 @@ def configurar_varias_contas(device, velocidade_bot):
             sleep(velocidade_bot)
 
             # Se nao iniciar de primeira e aparecer aplicativo do instagram, clica.
-            for x in range(30):
+            for x in range(60):
 
                 if device(text='Instagram').exists:
                     device(text='Instagram').click()

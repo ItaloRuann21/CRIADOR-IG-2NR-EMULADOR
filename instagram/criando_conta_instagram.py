@@ -5,13 +5,23 @@ from colorama import Back, Fore, Style, init
 
 from _2nr.pegar_codigo import pegar_codigo
 from contas import contas_criadas, nao_criou
-from utils.criar_conta_bd import create_conta_bd
+from instagram.reinviar_codigo import reinviar_codigo
 from mensagens.mensagens import (mensagem_atencao, mensagem_desativada,
                                  mensagem_erro, mensagem_normal,
                                  mensagem_sucesso)
+from utils.criar_conta_bd import create_conta_bd
 
 # Iniciando contador
 contador_contas = 0
+
+
+def avançar(device):
+    try:
+        device(text='Avançar').wait(60)
+        device(text='Avançar').click()
+    except:
+        mensagem_erro(' Não clicou em avançar.')
+        return False
 
 
 def criar_conta_bd(usuario, senha):
@@ -31,7 +41,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         # Clicar em Adicionar numero 2nr
         mensagem_normal(' Adicionando número 2nr')
         resposta = False
-        for x in range(30):
+        for x in range(60):
 
             if device(description='Número do celular').exists:
                 device(className='android.widget.EditText').click()
@@ -55,7 +65,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         sleep(velocidade_bot)
 
         # Preecnher numero
-        resposta = device(focused=True).exists(timeout=30)
+        resposta = device(focused=True).exists(timeout=60)
         if resposta:
             device(focused=True).set_text(numero)
 
@@ -66,18 +76,10 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         sleep(velocidade_bot)
 
         # Clicar em Avançar
-        def avançar():
-            resposta = device(text='Avançar').exists(timeout=30)
-            if resposta:
-                device(text='Avançar').click()
-            else:
-                mensagem_erro(' Não clicou em avançar.')
-                return False
-
-        avançar()
+        avançar(device)
         sleep(velocidade_bot)
 
-        for _ in range(30):
+        for _ in range(60):
 
             # Se aparecer pagina indisponivel
             if device(text='A Página não está disponível no momento').exists:
@@ -98,10 +100,10 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
             device(text='Enviar código por SMS').click()
 
             # Verificar se existre botão de envir código ou avançar
-            if device(text='Enviar código').exists(timeout=10):
-                device(text='Enviar código').click()
+            if device(text='Avançar').exists(timeout=10):
+                device(text='Avançar').click()
             else:
-                avançar()
+                device(text='Enviar código').click()
 
         sleep(velocidade_bot)
 
@@ -113,8 +115,11 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         sleep(velocidade_bot)
 
         # Verificando campo de código de confirmação
-        if device(text='Insira o código de confirmação').exists(timeout=30):
+        if device(text='Insira o código de confirmação').exists(timeout=60):
             mensagem_normal(' Código enviado, aguardando.')
+            if device(text='Várias contas não está respondendo').exists(3):
+                device(text='Aguarde').click()
+
             tentativas = 0
             codigo = False
 
@@ -127,9 +132,18 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
                     tentativas += 1
 
             if not codigo and tentativas == 2:
-                mensagem_erro(' Código do 2nr não chegou após 2 tentativas')
-                device.app_stop('pl.rs.sip.softphone.newapp')
-                return 1
+                mensagem_erro(
+                    ' Código do 2nr não chegou após 2 tentativas. Reinviando.')
+                device.press('recent')
+                sleep(3)
+                device.press('recent')
+                res = reinviar_codigo(device, velocidade_bot)
+                codigo = pegar_codigo(device, velocidade_bot=velocidade_bot)
+                if codigo:
+                    mensagem_normal(' Código chegou após reenviar.')
+                if not res or not codigo:
+                    device.app_stop('pl.rs.sip.softphone.newapp')
+                    return 1
         else:
             mensagem_erro(
                 ' O campo do código de confirmação não apareceu na tela. Possível bloqueio de IP.')
@@ -137,7 +151,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
 
         sleep(velocidade_bot)
         # Caso apareça o codigo de confirmação, digita o codigo
-        resposta = device(text='Código de confirmação').exists(timeout=30)
+        resposta = device(text='Código de confirmação').exists(timeout=60)
         if resposta:
             device(focused=True).set_text(codigo)
             mensagem_normal(' Código adicionado no input')
@@ -148,41 +162,41 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         sleep(velocidade_bot)
 
         # Clicar em Avançar
-        avançar()
+        avançar(device)
 
         sleep(velocidade_bot)
 
         # Colocando a senha
-        resposta = device(focused=True).exists(timeout=30)
+        resposta = device(focused=True).exists(timeout=60)
         if resposta:
             device(focused=True).set_text(senha)
             mensagem_normal(' Senha adicionada no campo do input.')
         else:
-            mensagem_erro(' Não foi possível adicionar senha')
+            mensagem_erro(' Seletor de senha não existe.')
             return False
         sleep(velocidade_bot)
 
         # Clicar em Avançar
-        avançar()
+        for _ in range(30):
+            if device(text='Avançar').exists:
+                device(text='Avançar').click()
 
-        sleep(velocidade_bot)
+            # Verificando se existe uma conta com esse número.
+            if device(text='CRIAR NOVA CONTA').exists:
+                device(text='CRIAR NOVA CONTA').click()
 
-        # Verificando se existe uma conta com esse número.
-        resposta = device(text='CRIAR NOVA CONTA').exists(timeout=7)
-        if resposta:
-            device(text='CRIAR NOVA CONTA').click()
-        sleep(velocidade_bot)
+            # Salvar suas informações de login?
+            if device(text='Salvar suas informações de login?').exists:
+                device(text='Agora não').click()
+                break
 
-        # Salvar suas informações de login?
-        resposta = device(
-            text='Salvar suas informações de login?').exists(timeout=30)
-        if resposta:
-            device(text='Agora não').click()
+            sleep(1)
+
         sleep(velocidade_bot)
 
         # Clicar em DEFINIR
         seletor = False
-        for _ in range(30):
+        for _ in range(60):
 
             if device(text='DEFINIR').exists:
                 device(text='DEFINIR').click()
@@ -202,14 +216,14 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         sleep(velocidade_bot)
 
         # Clicar em avançar
-        avançar()
+        avançar(device)
 
         sleep(velocidade_bot)
 
         # Se aparecer o erro
         resposta = device(
             text='Parece que você inseriu informações incorretas. Use sua data de nascimento verdadeira.').exists(
-            timeout=30)
+            timeout=60)
         if resposta:
             device(text='Avançar').click()
         else:
@@ -221,7 +235,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         mensagem_normal(' Definindo idade')
         ano = randint(18, 60)
         resposta = device(
-            className='android.widget.EditText').exists(timeout=30)
+            className='android.widget.EditText').exists(timeout=60)
         if resposta:
             device(className='android.widget.EditText').set_text(str(ano))
         else:
@@ -231,12 +245,12 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         sleep(velocidade_bot)
 
         # Clicando em avançar
-        avançar()
+        avançar(device)
 
         sleep(velocidade_bot)
 
         # Se aparecer essa msg
-        resposta = device(text='OK').exists(timeout=30)
+        resposta = device(text='OK').exists(timeout=60)
         if resposta:
             device(text='OK').click()
         else:
@@ -247,7 +261,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         # Definindo o nome completo
         mensagem_normal(' Digitando o nome completo.')
         seletor = False
-        for _ in range(30):
+        for _ in range(60):
 
             if device(focused=True).exists:
                 device(focused=True).set_text(nome)
@@ -255,7 +269,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
                 seletor = True
                 break
 
-            if device(focused=False).exists:
+            if device(text='Nome completo').exists:
                 device(text='Nome completo').click()
                 device(focused=True).set_text(nome)
                 mensagem_normal(' Nome completo: ' + nome)
@@ -271,12 +285,12 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
         sleep(velocidade_bot)
 
         # Clicar em avançar
-        avançar()
+        avançar(device)
 
         sleep(velocidade_bot)
 
         # Definindo um nome de usuario
-        resposta = device(text='Crie um nome de usuário').exists(timeout=30)
+        resposta = device(text='Crie um nome de usuário').exists(timeout=60)
         if resposta:
             # device(className='android.widget.EditText').click()
             sleep(velocidade_bot)
@@ -299,7 +313,7 @@ def iniciando_criacao_instagram(device, numero, senha, nome, usuario, velocidade
             sleep(1)
 
         # Clicando em avançar
-        avançar()
+        avançar(device)
 
         sleep(velocidade_bot)
 

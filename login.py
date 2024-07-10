@@ -1,9 +1,11 @@
 import os
-from pymongo import MongoClient
-from tkinter import Tk, Label, filedialog
-from tkinter.ttk import Button, Style, Progressbar
+from queue import Empty, Queue  # Importar Empty corretamente
 from threading import Thread
-from queue import Queue, Empty  # Importar Empty corretamente
+from tkinter import Label, Tk, filedialog
+from tkinter.ttk import Button, Progressbar, Style
+
+from pymongo import MongoClient
+
 from main import main
 
 # Variável global para controlar a execução do programa
@@ -37,7 +39,8 @@ def login():
 
         else:
             tentativas += 1
-            print(f"Usuário ou senha incorretos. Tentativas restantes: {tentativas_maximas - tentativas}")
+            print(
+                f"Usuário ou senha incorretos. Tentativas restantes: {tentativas_maximas - tentativas}")
 
     # Se todas as tentativas falharem, retornar False
     print("Número máximo de tentativas excedido. Saindo do sistema.")
@@ -77,7 +80,8 @@ def get_last_creation_time():
         last_creation = collection.find_one(sort=[('timestamp', -1)])
         if last_creation:
             # Formatar a data para excluir os segundos
-            formatted_time = last_creation['timestamp'].strftime("%d/%m/%Y %H:%M")
+            formatted_time = last_creation['timestamp'].strftime(
+                "%d/%m/%Y %H:%M")
             return formatted_time
         else:
             return "Nenhuma conta criada ainda"
@@ -114,22 +118,26 @@ def baixar_contas_criadas(file_path, progress_queue):
                 current_progress += progress_step
                 progress_queue.put(current_progress)
 
-        return True, f"Contas salvas em {file_path}"  # Retorna sucesso e mensagem
+        # Retorna sucesso e mensagem
+        return True, f"Contas salvas em {file_path}"
 
     except Exception as e:
         print(f"Erro ao baixar as contas do banco de dados: {e}")
-        return False, f"Erro ao baixar as contas do banco de dados: {e}"  # Retorna falha e mensagem de erro
+        # Retorna falha e mensagem de erro
+        return False, f"Erro ao baixar as contas do banco de dados: {e}"
 
     finally:
         client.close()
 
 
 def select_file(progress_queue, result_label):
-    file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
+    file_path = filedialog.asksaveasfilename(
+        defaultextension=".txt", filetypes=[("Text files", "*.txt")])
     if file_path:
         def thread_function():
             try:
-                success, message = baixar_contas_criadas(file_path, progress_queue)
+                success, message = baixar_contas_criadas(
+                    file_path, progress_queue)
                 result_label.config(text=message)
             except Exception as e:
                 result_label.config(text=f"Erro ao baixar as contas: {e}")
@@ -151,7 +159,8 @@ def create_gui():
     screen_height = root.winfo_screenheight()
     x_cordinate = int((screen_width / 2) - (window_width / 2))
     y_cordinate = int((screen_height / 2) - (window_height / 2))
-    root.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
+    root.geometry("{}x{}+{}+{}".format(window_width,
+                  window_height, x_cordinate, y_cordinate))
 
     # Configurando o estilo
     style = Style()
@@ -182,17 +191,20 @@ def create_gui():
     baixar_contas_button.pack(pady=10)
 
     # Barra de progresso
-    progress_bar = Progressbar(root, orient='horizontal', length=300, mode='determinate')
+    progress_bar = Progressbar(
+        root, orient='horizontal', length=300, mode='determinate')
     progress_bar.pack(pady=10)
 
     # Label para exibir resultado do download
-    result_label = Label(root, text="", background="#363636", foreground="white", font=("Poppins", 12))
+    result_label = Label(root, text="", background="#363636",
+                         foreground="white", font=("Poppins", 12))
     result_label.pack(pady=5)
 
     def update_progress():
         while root.winfo_exists():  # Verifica se a janela ainda existe
             try:
-                progress = progress_queue.get(timeout=1)  # Timeout para evitar bloqueio indefinido
+                # Timeout para evitar bloqueio indefinido
+                progress = progress_queue.get(timeout=1)
                 progress_bar['value'] = progress
                 root.update_idletasks()
             except Empty:

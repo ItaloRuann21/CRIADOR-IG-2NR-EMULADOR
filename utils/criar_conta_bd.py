@@ -1,5 +1,6 @@
-from pymongo import MongoClient
 from datetime import datetime
+
+from pymongo import MongoClient
 
 
 def create_conta_bd(usuario, senha):
